@@ -1,0 +1,71 @@
+{
+  "name": "EMEA-9_CommercialRisk_Quotes_Performer",
+  "description": "Aon Robotic Framework version 2.1 for RPA bot",
+  "main": "Main.xaml",
+  "dependencies": {
+    "ARL_DataManipulation": "[1.0.0]",
+    "ARL_Excel": "[1.0.1]",
+    "ARL_Framework": "[1.0.5]",
+    "ARL_Mail": "[1.0.1]",
+    "ARL_Microsoft365": "[1.0.0]",
+    "ARL_Orchestrator": "[1.0.3]",
+    "ARL_SystemInteractions": "[1.0.1]",
+    "EMEA-9_ARL_QuotesDataServiceEntities": "[1.0.1]",
+    "UiPath.DataService.Activities": "[21.10.1]"
+  },
+  "webServices": [],
+  "entitiesStores": [
+    {
+      "serviceDocument": ".entities/EntitiesStore.json",
+      "tenantName": "EMEA",
+      "namespace": "ARF",
+      "uniqueReference": "MMowxYk+ncXnxA8B0ZiPOY/jMJx/xj48c5Gw0CaknTE="
+    }
+  ],
+  "schemaVersion": "4.0",
+  "studioVersion": "21.10.3.0",
+  "projectVersion": "1.0.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": false,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [],
+    "modernBehavior": true
+  },
+  "expressionLanguage": "VisualBasic",
+  "entryPoints": [
+    {
+      "filePath": "Main.xaml",
+      "uniqueId": "09a61895-ce2b-46d7-9020-497969df0094",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Legacy"
+}

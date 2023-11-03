@@ -1,0 +1,22 @@
+﻿{
+	"ProcessName": "EMEA-9_CommercialRisk_Quotes_Performer",
+
+	"QueueName": "EMEA-9_Quotes_Performer",
+	"QueueNameSecond": "ARF_QueueNameSecond",
+	
+	"Asset_RobotSupportMail": "EMEA-9_Quotes_RobotSupportMail",
+	"Asset_BusinessMail": "EMEA-9_Quotes_BREMail",
+	"Asset_ExceptionFolder":"EMEA-9_Quotes_PerformerExceptionFolder",
+	"Asset_CompletedFolder":"EMEA-9_Quotes_PerformerCompletedFolder",
+	"Asset_ITEmail":"EMEA-9_Quotes_RobotSupportMail",
+	
+	"CSV_RelativePath":"\\Downloads\\Output_Results",
+	"OutputTemplate_ RelativePath":"\\Downloads\\Output_Template.xlsx",
+	"CredName_ApplicationCredentialName": "",
+
+	"PathTemp": "<placeholder>",
+	
+	"ErrorsInRowLimit": "-1",
+	"FlagSummaryReport": "False",
+	"FlagCheckIfNewItems": "False",
+}
