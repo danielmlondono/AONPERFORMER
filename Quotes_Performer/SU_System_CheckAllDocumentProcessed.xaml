@@ -1,7 +1,8 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="SU_SystemCheckAllDocumentProcessed" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:e="clr-namespace:EMEA_9_ARL_QuotesDataServiceEntities;assembly=EMEA-9_ARL_QuotesDataServiceEntities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:uda="clr-namespace:UiPath.DataService.Activities;assembly=UiPath.DataService.Activities.Core" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="SU_SystemCheckAllDocumentProcessed" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:a="clr-namespace:ARL_Microsoft365;assembly=ARL_Microsoft365" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:e="clr-namespace:EMEA_9_ARL_QuotesDataServiceEntities;assembly=EMEA-9_ARL_QuotesDataServiceEntities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:uda="clr-namespace:UiPath.DataService.Activities;assembly=UiPath.DataService.Activities.Core" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Document Entity ID to get Source and File ID based on the Data Service Schema" Name="DocumentEntityRecordID" Type="InArgument(q:CommercialRiskQuotesDocument)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] True if the bot was able to process every single Email" Name="AllAttachmentProcessedFlag" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="DictConfig" Type="InArgument(scg:Dictionary(x:String, x:String))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -48,6 +49,13 @@
       <x:String>NA_9_ARL_QuotesDataServiceEntities</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
       <x:String>EMEA_9_ARL_QuotesDataServiceEntities</x:String>
+      <x:String>ARL_Microsoft365</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Models</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Mail</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities</x:String>
+      <x:String>Microsoft.Graph</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -96,7 +104,11 @@
       <AssemblyReference>NA-9_ARL_QuotesDataServiceEntities</AssemblyReference>
       <AssemblyReference>EMEA-9_ARL_QuotesDataServiceEntities</AssemblyReference>
       <AssemblyReference>System.Linq.Async</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>ARL_Microsoft365</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365</AssemblyReference>
+      <AssemblyReference>Microsoft.Graph</AssemblyReference>
+      <AssemblyReference>Microsoft.Graph.Core</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Flowchart sap2010:Annotation.AnnotationText="Checks if All Attachment associated with the Email are processed with the help of Document Entity Statuses" DisplayName="SU_SystemCheckAllDocumentProcessed" sap:VirtualizedContainerService.HintSize="1292,1456" sap2010:WorkflowViewState.IdRef="Flowchart_1">
@@ -130,7 +142,7 @@
           <av:PointCollection x:Key="ConnectorLocation">470,234.666666666667 470,275</av:PointCollection>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence sap2010:Annotation.AnnotationText="Get the Source entity ID and filter the File entity based on the SourceID" DisplayName="Source Entity ID" sap:VirtualizedContainerService.HintSize="200,138" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <Sequence sap2010:Annotation.AnnotationText="Get the Source entity ID and filter the File entity based on the SourceID" DisplayName="Source Entity ID" sap:VirtualizedContainerService.HintSize="403,791" sap2010:WorkflowViewState.IdRef="Sequence_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -146,7 +158,7 @@
             <InArgument x:TypeArguments="x:String">[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id.ToString]</InArgument>
           </Assign.Value>
         </Assign>
-        <e:GetRecordById_Source FlagFoundRecord="{x:Null}" DisplayName="UnresolvedActivity" sap:VirtualizedContainerService.HintSize="341,80" sap2010:WorkflowViewState.IdRef="GetRecordById_Source_2" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" QuotesSourceRecord="[strSourceEntityRecord]">
+        <e:GetRecordById_Source FlagFoundRecord="{x:Null}" DisplayName="GetRecordById_Source" sap:VirtualizedContainerService.HintSize="341,80" sap2010:WorkflowViewState.IdRef="GetRecordById_Source_2" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" QuotesSourceRecord="[strSourceEntityRecord]">
           <e:GetRecordById_Source.CurrentProcessName>
             <InArgument x:TypeArguments="x:String" />
           </e:GetRecordById_Source.CurrentProcessName>
@@ -193,7 +205,7 @@
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:MultipleAssign DisplayName="Multiple Assign -Auxiliar counters" sap:VirtualizedContainerService.HintSize="631.333333333333,162" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+            <ui:MultipleAssign DisplayName="Multiple Assign -Auxiliar counters" sap:VirtualizedContainerService.HintSize="582,163" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
               <ui:MultipleAssign.AssignOperations>
                 <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -223,28 +235,28 @@
                 </scg:List>
               </ui:MultipleAssign.AssignOperations>
             </ui:MultipleAssign>
-            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="631.333333333333,697.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[outputFilterSourceID]">
+            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="582,661" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[outputFilterSourceID]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="q:CommercialRiskQuotesFile">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="q:CommercialRiskQuotesFile" Name="currentItem" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="594.666666666667,568" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="546,536" sap2010:WorkflowViewState.IdRef="Sequence_3">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <If Condition="[currentItem.Status.ToString=&quot;Queued&quot; OR currentItem.Status.ToString=&quot;null&quot;]" DisplayName="If - Status contains Queued or null" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
+                    <If Condition="[currentItem.Status.ToString=&quot;Queued&quot; OR currentItem.Status.ToString=&quot;null&quot;]" DisplayName="If - Status contains Queued or null" sap:VirtualizedContainerService.HintSize="484,425" sap2010:WorkflowViewState.IdRef="If_1">
                       <If.Then>
-                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="400,237" sap2010:WorkflowViewState.IdRef="Sequence_4">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Queued or null status exists" />
-                          <Assign DisplayName="Assign - increase counter" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
+                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Queued or null status exists" />
+                          <Assign DisplayName="Assign - increase counter" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="Assign_2">
                             <Assign.To>
                               <OutArgument x:TypeArguments="x:Int32">[counter]</OutArgument>
                             </Assign.To>
@@ -292,7 +304,7 @@
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <av:Point x:Key="ShapeLocation">10,807.666666666667</av:Point>
                       <av:Size x:Key="ShapeSize">200,123</av:Size>
-                      <av:PointCollection x:Key="ConnectorLocation">110,930.666666666667 110,1322.66666666667 510,1322.66666666667</av:PointCollection>
+                      <av:PointCollection x:Key="ConnectorLocation">110,930.666666666667 110,1319.16666666667 510,1319.16666666667</av:PointCollection>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <Sequence sap2010:Annotation.AnnotationText="Any record contains Queued or null" DisplayName="Queued or null" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_6">
@@ -317,10 +329,10 @@
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <av:Point x:Key="ShapeLocation">510,1257.66666666667</av:Point>
-                          <av:Size x:Key="ShapeSize">200,130</av:Size>
+                          <av:Size x:Key="ShapeSize">200,123</av:Size>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Sequence sap2010:Annotation.AnnotationText="Current transaction was completed" DisplayName="More Queue Item?" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                      <Sequence sap2010:Annotation.AnnotationText="Current transaction was completed" DisplayName="More Queue Item?" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_17">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -432,31 +444,63 @@
                                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Rejected" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_14" LogMessage="File Status contains Rejected" />
-                            <Assign DisplayName="Assign - Source Entity Status to Exception" sap:VirtualizedContainerService.HintSize="631.333333333333,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_4">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="x:String">[DocumentEntityRecordID.FileEntityID.SourceEntityID.Status]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="x:String">Exception</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                            <uda:UpdateEntityRecord x:TypeArguments="q:CommercialRiskQuotesSource" ContinueOnError="False" DisplayName="Update Entity Record - Source Entity Status as Exception" ExpansionDepth="2" sap:VirtualizedContainerService.HintSize="631.333333333333,225.333333333333" sap2010:WorkflowViewState.IdRef="UpdateEntityRecord`1_1" InputEntity="[DocumentEntityRecordID.FileEntityID.SourceEntityID]" OutputEntity="[updatedRecordStatusException]" TimeoutInMs="30000" />
-                            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="631.333333333333,697.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[outputFilterSourceID]">
+                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Rejected" sap:VirtualizedContainerService.HintSize="630,25" sap2010:WorkflowViewState.IdRef="Logging_14" LogMessage="File Status contains Rejected" />
+                            <e:UpdateRecord_Source sap:VirtualizedContainerService.HintSize="630,25" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_2" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="Exception" UpdatedSourceRecord="[updatedRecordStatusException]">
+                              <e:UpdateRecord_Source.Account>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Account>
+                              <e:UpdateRecord_Source.CurrentProcessName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.CurrentProcessName>
+                              <e:UpdateRecord_Source.Directory>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Directory>
+                              <e:UpdateRecord_Source.ForwardDate>
+                                <InArgument x:TypeArguments="s:Nullable(s:DateTimeOffset)" />
+                              </e:UpdateRecord_Source.ForwardDate>
+                              <e:UpdateRecord_Source.FromEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.FromEmail>
+                              <e:UpdateRecord_Source.FromName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.FromName>
+                              <e:UpdateRecord_Source.MessageID>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.MessageID>
+                              <e:UpdateRecord_Source.ReceiveDate>
+                                <InArgument x:TypeArguments="s:Nullable(s:DateTimeOffset)" />
+                              </e:UpdateRecord_Source.ReceiveDate>
+                              <e:UpdateRecord_Source.SenderEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.SenderEmail>
+                              <e:UpdateRecord_Source.SourceType>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.SourceType>
+                              <e:UpdateRecord_Source.Subject>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Subject>
+                              <e:UpdateRecord_Source.ToEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.ToEmail>
+                              <e:UpdateRecord_Source.ToName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.ToName>
+                            </e:UpdateRecord_Source>
+                            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="630,685" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[outputFilterSourceID]">
                               <ui:ForEach.Body>
                                 <ActivityAction x:TypeArguments="q:CommercialRiskQuotesFile">
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="q:CommercialRiskQuotesFile" Name="currentItem" />
                                   </ActivityAction.Argument>
-                                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="594.666666666667,568" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="594,560" sap2010:WorkflowViewState.IdRef="Sequence_22">
                                     <sap:WorkflowViewStateService.ViewState>
                                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532,449" sap2010:WorkflowViewState.IdRef="If_3">
                                       <If.Then>
-                                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261" sap2010:WorkflowViewState.IdRef="Sequence_20">
                                           <sap:WorkflowViewStateService.ViewState>
                                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -501,7 +545,7 @@
                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                   <av:Point x:Key="ShapeLocation">417,926.666666666667</av:Point>
                                   <av:Size x:Key="ShapeSize">106,87</av:Size>
-                                  <av:PointCollection x:Key="TrueConnector">417,970.166666666667 352,970.166666666667 352,1077.66666666667</av:PointCollection>
+                                  <av:PointCollection x:Key="TrueConnector">417,970.166666666667 340,970.166666666667 340,1077.66666666667</av:PointCollection>
                                   <av:PointCollection x:Key="FalseConnector">523,970 610,970 610,1077.66666666667</av:PointCollection>
                                 </scg:Dictionary>
                               </sap:WorkflowViewStateService.ViewState>
@@ -510,11 +554,11 @@
                                   <sap:WorkflowViewStateService.ViewState>
                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                       <av:Point x:Key="ShapeLocation">240,1077.66666666667</av:Point>
-                                      <av:Size x:Key="ShapeSize">224,123</av:Size>
-                                      <av:PointCollection x:Key="ConnectorLocation">352,1200.66666666667 352,1322.66666666667 510,1322.66666666667</av:PointCollection>
+                                      <av:Size x:Key="ShapeSize">200,123</av:Size>
+                                      <av:PointCollection x:Key="ConnectorLocation">340,1200.66666666667 340,1319.16666666667 510,1319.16666666667</av:PointCollection>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <Sequence sap2010:Annotation.AnnotationText="Move Email to Manual Inbox UNREAD" DisplayName="Sequence - Source type Email Manual" sap:VirtualizedContainerService.HintSize="400,427" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                  <Sequence sap2010:Annotation.AnnotationText="Move Email to Manual Inbox UNREAD" DisplayName="Sequence - Source type Email Manual" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_13">
                                     <Sequence.Variables>
                                       <Variable x:TypeArguments="scg:List(snm:MailMessage)" sap2010:Annotation.AnnotationText="[REQUIRED] Email gotten by the bot using MessageID" Name="ManualMessage" />
                                     </Sequence.Variables>
@@ -525,8 +569,14 @@
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
                                     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Manual Inbox" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_7" LogMessage="Move Email to Manual" />
-                                    <ui:GetOutlookMailMessages Account="{x:Null}" Filter="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Get Outlook Mail Messages" FilterByMessageIds="[{strSourceEntityRecord.MessageID.ToString}]" GetAttachements="False" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_1" MailFolder="Inbox" MarkAsRead="False" Messages="[ManualMessage]" OnlyUnreadMessages="False" OrderByDate="NewestFirst" Top="30" />
-                                    <ui:MoveOutlookMessage Account="{x:Null}" DisplayName="Move Outlook Mail Message" sap:VirtualizedContainerService.HintSize="338,90" sap2010:WorkflowViewState.IdRef="MoveOutlookMessage_1" MailFolder="Manual" MailMessage="[ManualMessage(0)]" />
+                                    <a:MoveMailMsgs ApplicationID="[DictConfig(&quot;Asset_AppIDO365&quot;)]" DisplayName="Move Email to Manual" EmailAccount="[DictConfig(&quot;Asset_EmailAccount&quot;)]" FromFolderName="[DictConfig(&quot;Asset_EmailProcessingFolder&quot;)]" sap:VirtualizedContainerService.HintSize="338,52" sap2010:WorkflowViewState.IdRef="MoveMailMsgs_1" MailCredAssetName="[DictConfig(&quot;CredName_Office365Keys&quot;)]" OrchestratorFolderPath="[DictConfig(&quot;PathOrchestratorFolderOffice365&quot;)]" TenantID="[DictConfig(&quot;Asset_TenatIDO365&quot;)]" ToFolderName="[DictConfig(&quot;Asset_EmailManualFolder&quot;)]" UniqueEmailID="[strSourceEntityRecord.MessageID.ToString]">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                    </a:MoveMailMsgs>
                                     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_16" LogMessage="Current mail message was moved to Manual Folder" />
                                   </Sequence>
                                   <FlowStep.Next>
@@ -580,38 +630,70 @@
                                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Rejected" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="File Status doesn't contain Rejected" />
-                            <Assign DisplayName="Assign - Source Entity Status to Completed" sap:VirtualizedContainerService.HintSize="631.333333333333,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_5">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="x:String">[DocumentEntityRecordID.FileEntityID.SourceEntityID.Status]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="x:String">Completed</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                            <uda:UpdateEntityRecord x:TypeArguments="q:CommercialRiskQuotesSource" ContinueOnError="False" DisplayName="Update Entity Record - Source Entity status as Completed" ExpansionDepth="2" sap:VirtualizedContainerService.HintSize="631.333333333333,225.333333333333" sap2010:WorkflowViewState.IdRef="UpdateEntityRecord`1_2" InputEntity="[DocumentEntityRecordID.FileEntityID.SourceEntityID]" OutputEntity="[updatedRecordStatusCompleted]" TimeoutInMs="30000" />
-                            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="631.333333333333,697.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[outputFilterSourceID]">
+                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Rejected" sap:VirtualizedContainerService.HintSize="582,25" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="File Status doesn't contain Rejected" />
+                            <e:UpdateRecord_Source sap:VirtualizedContainerService.HintSize="582,25" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_1" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="Completed" UpdatedSourceRecord="[updatedRecordStatusCompleted]">
+                              <e:UpdateRecord_Source.Account>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Account>
+                              <e:UpdateRecord_Source.CurrentProcessName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.CurrentProcessName>
+                              <e:UpdateRecord_Source.Directory>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Directory>
+                              <e:UpdateRecord_Source.ForwardDate>
+                                <InArgument x:TypeArguments="s:Nullable(s:DateTimeOffset)" />
+                              </e:UpdateRecord_Source.ForwardDate>
+                              <e:UpdateRecord_Source.FromEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.FromEmail>
+                              <e:UpdateRecord_Source.FromName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.FromName>
+                              <e:UpdateRecord_Source.MessageID>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.MessageID>
+                              <e:UpdateRecord_Source.ReceiveDate>
+                                <InArgument x:TypeArguments="s:Nullable(s:DateTimeOffset)" />
+                              </e:UpdateRecord_Source.ReceiveDate>
+                              <e:UpdateRecord_Source.SenderEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.SenderEmail>
+                              <e:UpdateRecord_Source.SourceType>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.SourceType>
+                              <e:UpdateRecord_Source.Subject>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.Subject>
+                              <e:UpdateRecord_Source.ToEmail>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.ToEmail>
+                              <e:UpdateRecord_Source.ToName>
+                                <InArgument x:TypeArguments="x:String" />
+                              </e:UpdateRecord_Source.ToName>
+                            </e:UpdateRecord_Source>
+                            <ui:ForEach x:TypeArguments="q:CommercialRiskQuotesFile" CurrentIndex="{x:Null}" DisplayName="For Each - Row in the filter results" sap:VirtualizedContainerService.HintSize="582,661" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[outputFilterSourceID]">
                               <ui:ForEach.Body>
                                 <ActivityAction x:TypeArguments="q:CommercialRiskQuotesFile">
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="q:CommercialRiskQuotesFile" Name="currentItem" />
                                   </ActivityAction.Argument>
-                                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="594.666666666667,568" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="546,536" sap2010:WorkflowViewState.IdRef="Sequence_25">
                                     <sap:WorkflowViewStateService.ViewState>
                                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Sour Typefilter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Sour Typefilter" sap:VirtualizedContainerService.HintSize="484,425" sap2010:WorkflowViewState.IdRef="If_4">
                                       <If.Then>
-                                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                        <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="400,237" sap2010:WorkflowViewState.IdRef="Sequence_23">
                                           <sap:WorkflowViewStateService.ViewState>
                                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                             </scg:Dictionary>
                                           </sap:WorkflowViewStateService.ViewState>
-                                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_19" LogMessage="Source Type is equal to Email" />
-                                          <Assign DisplayName="Assign - increase counter" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
+                                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_19" LogMessage="Source Type is equal to Email" />
+                                          <Assign DisplayName="Assign - increase counter" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="Assign_9">
                                             <Assign.To>
                                               <OutArgument x:TypeArguments="x:Int32">[CounterEmail]</OutArgument>
                                             </Assign.To>
@@ -641,7 +723,7 @@
                                 </scg:Dictionary>
                               </sap:WorkflowViewStateService.ViewState>
                             </ui:ForEach>
-                            <Assign DisplayName="Assign - Processed Flag Arg" sap:VirtualizedContainerService.HintSize="631.333333333333,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_7">
+                            <Assign DisplayName="Assign - Processed Flag Arg" sap:VirtualizedContainerService.HintSize="582,61" sap2010:WorkflowViewState.IdRef="Assign_7">
                               <Assign.To>
                                 <OutArgument x:TypeArguments="x:Boolean">[AllAttachmentProcessedFlag]</OutArgument>
                               </Assign.To>
@@ -667,7 +749,7 @@
                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                       <av:Point x:Key="ShapeLocation">740,1077.66666666667</av:Point>
                                       <av:Size x:Key="ShapeSize">200,123</av:Size>
-                                      <av:PointCollection x:Key="ConnectorLocation">840,1200.66666666667 840,1322.66666666667 710,1322.66666666667</av:PointCollection>
+                                      <av:PointCollection x:Key="ConnectorLocation">840,1200.66666666667 840,1319.16666666667 710,1319.16666666667</av:PointCollection>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
                                   <Sequence sap2010:Annotation.AnnotationText="Move Email to Completed Inbox UNREAD" DisplayName="Sequence - Source type Email Completed" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_16">
@@ -681,8 +763,14 @@
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
                                     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Completed Inbox" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_10" LogMessage="Move Email to Completed" />
-                                    <ui:GetOutlookMailMessages Account="{x:Null}" Filter="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Get Outlook Mail Messages" FilterByMessageIds="[{strSourceEntityRecord.MessageID.ToString}]" GetAttachements="False" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_2" MailFolder="Inbox" MarkAsRead="False" Messages="[CompletedMessage]" OnlyUnreadMessages="False" OrderByDate="NewestFirst" Top="30" />
-                                    <ui:MoveOutlookMessage Account="{x:Null}" DisplayName="Move Outlook Mail Message" sap:VirtualizedContainerService.HintSize="338,90" sap2010:WorkflowViewState.IdRef="MoveOutlookMessage_2" MailFolder="Completed" MailMessage="[CompletedMessage(0)]" />
+                                    <a:MoveMailMsgs ApplicationID="[DictConfig(&quot;Asset_AppIDO365&quot;)]" DisplayName="Move Email to Completed" EmailAccount="[DictConfig(&quot;Asset_EmailAccount&quot;)]" FromFolderName="[DictConfig(&quot;Asset_EmailProcessingFolder&quot;)]" sap:VirtualizedContainerService.HintSize="338,52" sap2010:WorkflowViewState.IdRef="MoveMailMsgs_2" MailCredAssetName="[DictConfig(&quot;CredName_Office365Keys&quot;)]" OrchestratorFolderPath="[DictConfig(&quot;PathOrchestratorFolderOffice365&quot;)]" TenantID="[DictConfig(&quot;Asset_TenatIDO365&quot;)]" ToFolderName="[DictConfig(&quot;Asset_EmailCompletedFolder&quot;)]" UniqueEmailID="[strSourceEntityRecord.MessageID.ToString]">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                    </a:MoveMailMsgs>
                                     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" sap:VirtualizedContainerService.HintSize="338,25" sap2010:WorkflowViewState.IdRef="Logging_17" LogMessage="Current mail message was moved to Completed Folder" />
                                   </Sequence>
                                   <FlowStep.Next>
@@ -696,7 +784,7 @@
                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                       <av:Point x:Key="ShapeLocation">1030,1087.66666666667</av:Point>
                                       <av:Size x:Key="ShapeSize">200,123</av:Size>
-                                      <av:PointCollection x:Key="ConnectorLocation">1130,1210.66666666667 1130,1322.66666666667 710,1322.66666666667</av:PointCollection>
+                                      <av:PointCollection x:Key="ConnectorLocation">1130,1210.66666666667 1130,1319.16666666667 710,1319.16666666667</av:PointCollection>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
                                   <Sequence sap2010:Annotation.AnnotationText="Source Type is not Email for Completed Entity Status" DisplayName="Sequence - No Email Type Com" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_15">

@@ -9,7 +9,19 @@
 	"Asset_ExceptionFolder":"EMEA-9_Quotes_PerformerExceptionFolder",
 	"Asset_CompletedFolder":"EMEA-9_Quotes_PerformerCompletedFolder",
 	"Asset_ITEmail":"EMEA-9_Quotes_RobotSupportMail",
-	
+	"Asset_RetriesCount":"EMEA-9_Quotes_DispatcherEmailRetries",
+
+	"Asset_TenatIDO365" : "EMEA-9_Quotes_DispatcherEmailTenantIDO365", 
+	"Asset_AppIDO365" : "EMEA-9_Quotes_DispatcherEmailApplicationIDO365", 
+	"Asset_EmailAccount": "EMEA-9_Quotes_DispatcherEmailAcct",   
+	"Asset_EmailInbox": "EMEA-9_Quotes_DispatcherEmailFolder", 
+	"Asset_EmailManualFolder": "EMEA-9_Quotes_DispatcherEmailFolderManual", 
+	"Asset_EmailProcessingFolder": "EMEA-9_Quotes_DispatcherEmailFolderProcessing", 
+	"Asset_EmailCompletedFolder": "EMEA-9_Quotes_DispatcherEmailFolderCompleted", 
+
+	"CredName_Office365Keys": "Aon UiPath_CommercialRisk_GraphAPI_Staging- AR3095",
+        "PathOrchestratorFolderOffice365" : "UiPath_PS/Commercial Risk",
+
 	"CSV_RelativePath":"\\Downloads\\Output_Results",
 	"OutputTemplate_ RelativePath":"\\Downloads\\Output_Template.xlsx",
 	"CredName_ApplicationCredentialName": "",

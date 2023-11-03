@@ -10,8 +10,8 @@
     "ARL_Microsoft365": "[1.0.0]",
     "ARL_Orchestrator": "[1.0.3]",
     "ARL_SystemInteractions": "[1.0.1]",
-    "EMEA-9_ARL_QuotesDataServiceEntities": "[1.0.1]",
-    "UiPath.DataService.Activities": "[21.10.1]"
+    "ARL_SystemOperations": "[1.0.0]",
+    "EMEA-9_ARL_QuotesDataServiceEntities": "[1.0.1]"
   },
   "webServices": [],
   "entitiesStores": [
