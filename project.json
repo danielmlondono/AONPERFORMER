@@ -18,8 +18,8 @@
     {
       "serviceDocument": ".entities/EntitiesStore.json",
       "tenantName": "EMEA",
-      "namespace": "ARF",
-      "uniqueReference": "MMowxYk+ncXnxA8B0ZiPOY/jMJx/xj48c5Gw0CaknTE="
+      "namespace": "EMEA_9_CommercialRisk_Quotes_Entities",
+      "uniqueReference": "i9IaOvUiITiFWjnVab5yHA/sAVPJ3ePeeAD+BXAsItU="
     }
   ],
   "schemaVersion": "4.0",
