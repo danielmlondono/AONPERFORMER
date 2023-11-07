@@ -98,7 +98,6 @@
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>ARL_SystemOperations</AssemblyReference>
       <AssemblyReference>UiPath.Platform</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Flowchart DisplayName="Process___Performer" sap:VirtualizedContainerService.HintSize="689.333333333333,1166" sap2010:WorkflowViewState.IdRef="Flowchart_1">
@@ -434,7 +433,7 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </ui:MultipleAssign>
-                        <e:GetRecordById_File FlagFoundRecord="{x:Null}" DisplayName="GetRecordById_File" sap:VirtualizedContainerService.HintSize="422.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="GetRecordById_File_3" InputRecordID="[documentRecordResults.FileEntityID.Id]" QuotesFileRecord="[fileEntityRecordResults]">
+                        <e:GetRecordById_File FlagFoundRecord="{x:Null}" DisplayName="GetRecordById_File - New File Path" sap:VirtualizedContainerService.HintSize="422.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="GetRecordById_File_3" InputRecordID="[documentRecordResults.FileEntityID.Id]" QuotesFileRecord="[fileEntityRecordResults]">
                           <e:GetRecordById_File.CurrentProcessName>
                             <InArgument x:TypeArguments="x:String" />
                           </e:GetRecordById_File.CurrentProcessName>
