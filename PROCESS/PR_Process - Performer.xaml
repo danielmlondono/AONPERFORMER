@@ -398,7 +398,7 @@
                           <av:PointCollection x:Key="ConnectorLocation">520,765 520,805</av:PointCollection>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Sequence sap2010:Annotation.AnnotationText="Move file to Completed Shared Folder" DisplayName="Step 4 - Identify file location" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                      <Sequence sap2010:Annotation.AnnotationText="Move file to Completed Shared Folder" DisplayName="Step 4 - Identify file location" sap:VirtualizedContainerService.HintSize="484.666666666667,1042" sap2010:WorkflowViewState.IdRef="Sequence_5">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -434,6 +434,17 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </ui:MultipleAssign>
+                        <e:GetRecordById_File FlagFoundRecord="{x:Null}" DisplayName="GetRecordById_File" sap:VirtualizedContainerService.HintSize="422.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="GetRecordById_File_3" InputRecordID="[documentRecordResults.FileEntityID.Id]" QuotesFileRecord="[fileEntityRecordResults]">
+                          <e:GetRecordById_File.CurrentProcessName>
+                            <InArgument x:TypeArguments="x:String" />
+                          </e:GetRecordById_File.CurrentProcessName>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </e:GetRecordById_File>
                         <a:MoveFile CountRetries="[Convert.ToInt32(dictConfig(&quot;Asset_RetriesCount&quot;))]" DisplayName="MoveFile - Completed" sap:VirtualizedContainerService.HintSize="422.666666666667,246" sap2010:WorkflowViewState.IdRef="MoveFile_2" PathFromFile="[fileEntityRecordResults.FilePath.ToString]" PathToFolder="[Path.GetDirectoryName(completedPath) + &quot;\&quot;]" ToFileName="[Path.GetFileName(completedPath)]" />
                         <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="422.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="CommentOut_2">
                           <ui:CommentOut.Body>
