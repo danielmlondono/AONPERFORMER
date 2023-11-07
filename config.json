@@ -23,6 +23,7 @@
         "PathOrchestratorFolderOffice365" : "UiPath_PS/Commercial Risk",
 
 	"CSV_RelativePath":"\\Downloads\\Output_Results",
+	"Json_RelativePath":"\\Downloads\\",
 	"OutputTemplate_ RelativePath":"\\Downloads\\Output_Template.xlsx",
 	"CredName_ApplicationCredentialName": "",
 
