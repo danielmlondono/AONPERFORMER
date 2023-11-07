@@ -110,7 +110,6 @@
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Linq.Async</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="594.666666666667,2574" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -205,7 +204,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Validation" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_2" LogMessage="Validation station was needed" />
-          <Assign sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
+          <Assign DisplayName="Assign - User Validated for csv report" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[UserValidated]</OutArgument>
             </Assign.To>
@@ -226,7 +225,7 @@
       </If.Else>
     </If>
     <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{DocumentEntityRecord.Id,DocumentEntityRecord.Id.ToString+&quot;_&quot;+(dtResult.RowCount+1).ToString,DocumentEntityRecord.CreateTime,SourceEntityRecord.ReceiveDate,SourceEntityRecord.ReceiveDate,UserValidated,DocumentEntityRecord.ValidationEnd,DocumentEntityRecord.ValidatedBy,FileEntityRecord.FilePath,SourceEntityRecord.FromName,SourceEntityRecord.FromEmail,SourceEntityRecord.ToName,SourceEntityRecord.ToEmail,SourceEntityRecord.Subject,SourceEntityRecord.SourceType,jsonObject(&quot;OutputResults&quot;)(&quot;Carrier Quote Reference&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Quote Issue Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Type of Quote&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Policy Reference&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Quote Validity Period&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Carrier Name&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Broker Name&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Underwriter Name&quot;).ToString,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Insured Name&quot;).ToString,&quot;&quot;,&quot;&quot;,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Inception Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Expiry Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Total Insured Value&quot;).ToString,&quot;&quot;,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Coverage Type&quot;).ToString,layerArray(0)(&quot;Layer Premium&quot;).ToString(),layerArray(0)(&quot;Attachment Point&quot;).ToString(),layerArray(0)(&quot;Limit of Liability&quot;).ToString(),layerArray(0)(&quot;Capacity&quot;).ToString(),jsonObject(&quot;OutputResults&quot;)(&quot;Deductible&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Sublimits&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Currency&quot;).ToString,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Commission&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Conditions&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Subjectivities&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Exclusions&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Situation&quot;).ToString,layerArray(0)(&quot;TRIA Premium&quot;).ToString()}]" DataTable="[dtResult]" DisplayName="Add Data Row - CSV report After validation" sap:VirtualizedContainerService.HintSize="532.666666666667,191.333333333333" sap2010:WorkflowViewState.IdRef="AddDataRow_5" />
-    <Assign sap:VirtualizedContainerService.HintSize="532.666666666667,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
+    <Assign DisplayName="Assign - New current file name" sap:VirtualizedContainerService.HintSize="532.666666666667,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[ChangedFileName]</OutArgument>
       </Assign.To>
