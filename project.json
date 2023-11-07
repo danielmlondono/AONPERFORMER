@@ -1,5 +1,6 @@
 {
   "name": "EMEA-9_CommercialRisk_Quotes_Performer",
+  "projectId": "2a579ccf-6db7-4f48-bacf-5e17591e571b",
   "description": "Aon Robotic Framework version 2.1 for RPA bot",
   "main": "Main.xaml",
   "dependencies": {
@@ -11,7 +12,7 @@
     "ARL_Orchestrator": "[1.0.3]",
     "ARL_SystemInteractions": "[1.0.1]",
     "ARL_SystemOperations": "[1.0.0]",
-    "EMEA-9_ARL_QuotesDataServiceEntities": "[1.0.1]"
+    "EMEA-9_ARL_QuotesDataServiceEntities": "[1.0.0]"
   },
   "webServices": [],
   "entitiesStores": [
@@ -32,6 +33,7 @@
     "isAttended": false,
     "requiresUserInteraction": true,
     "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
     "excludedLoggedData": [
       "Private:*",
       "*password*"
@@ -53,7 +55,8 @@
       "ignoredFiles": []
     },
     "fileInfoCollection": [],
-    "modernBehavior": true
+    "modernBehavior": true,
+    "saveToCloud": false
   },
   "expressionLanguage": "VisualBasic",
   "entryPoints": [
