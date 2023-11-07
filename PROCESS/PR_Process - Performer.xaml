@@ -247,7 +247,7 @@
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <av:Point x:Key="ShapeLocation">0,805</av:Point>
                       <av:Size x:Key="ShapeSize">200,130</av:Size>
-                      <av:PointCollection x:Key="ConnectorLocation">200,870 330,870 330,976.666666666667</av:PointCollection>
+                      <av:PointCollection x:Key="ConnectorLocation">100,935 100,1050 230,1050</av:PointCollection>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <Sequence sap2010:Annotation.AnnotationText="The File path in the File Entity is updated" DisplayName="Step 3 - Update File Path" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_21">
@@ -350,7 +350,7 @@
                       <av:PointCollection x:Key="ConnectorLocation">520,585 520,635</av:PointCollection>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <Sequence sap2010:Annotation.AnnotationText="Rename the file and update file path in File Entity" DisplayName="Step 3 - Rename the file" sap:VirtualizedContainerService.HintSize="496,898.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                  <Sequence sap2010:Annotation.AnnotationText="Rename the file and update file path in File Entity" DisplayName="Step 3 - Rename the file" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_26">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains path with the new name for the current input file" Name="changedPath" />
                       <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] output variable for update File path in File entity with the new name" Name="updatedRecordNewName" />
