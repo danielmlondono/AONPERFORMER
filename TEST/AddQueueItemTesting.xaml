@@ -53,7 +53,7 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="&quot;63DE0764-597A-EE11-B75E-002248A4238C&quot;  Aon document ID&#xD;&#xA;&quot;1F25629C-2D78-EE11-B75C-000D3AB453B4&quot; Sebastian's ID" DisplayName="AddQueueItemTesting" sap:VirtualizedContainerService.HintSize="450,181.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="&quot;63DE0764-597A-EE11-B75E-002248A4238C&quot;  Aon document ID&#xA;&quot;1F25629C-2D78-EE11-B75C-000D3AB453B4&quot; Sebastian's ID&#xA;Currently Test Exception flag= False !!!!" DisplayName="AddQueueItemTesting" sap:VirtualizedContainerService.HintSize="450,198" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -62,12 +62,8 @@
     </sap:WorkflowViewStateService.ViewState>
     <ui:AddQueueItem ServiceBaseAddress="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Add Queue Item" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="EMEA-9_Quotes_Performer" Reference="1F25629C-...">
       <ui:AddQueueItem.ItemInformation>
-        <InArgument x:TypeArguments="x:String" x:Key="EntityID">
-          <Literal x:TypeArguments="x:String">1F25629C-2D78-EE11-B75C-000D3AB453B4</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="ExceptionFlag">
-          <Literal x:TypeArguments="x:String">False</Literal>
-        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="EntityID">1F25629C-2D78-EE11-B75C-000D3AB453B4</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="ExceptionFlag">True</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="Argument1" />
       </ui:AddQueueItem.ItemInformation>
     </ui:AddQueueItem>
