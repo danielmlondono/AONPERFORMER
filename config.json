@@ -12,6 +12,9 @@
 	"Asset_PerformerExceptionSourceStatus":"EMEA-9_Quotes_PerformerEntitySourceRecordStatusException",
 	"Asset_PerformerEmailSourceType":"EMEA-9_Quotes_PerfomerEntitySourceTypeEmail",
 	
+	"Asset_ExceptionFolder":"EMEA-9_Quotes_ExceptionFolder",
+	"Asset_CompletedFolder":"EMEA-9_Quotes_CompletedFolder",
+	
 	"Asset_ITEmail":"EMEA-9_Quotes_RobotSupportMail",
 	"Asset_RetriesCount":"EMEA-9_Quotes_DispatcherEmailRetries",
 
