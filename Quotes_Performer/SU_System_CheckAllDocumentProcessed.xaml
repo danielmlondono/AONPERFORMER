@@ -109,6 +109,7 @@
       <AssemblyReference>Microsoft.Graph</AssemblyReference>
       <AssemblyReference>Microsoft.Graph.Core</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Flowchart sap2010:Annotation.AnnotationText="Checks if All Attachment associated with the Email are processed with the help of Document Entity Statuses" DisplayName="SU_SystemCheckAllDocumentProcessed" sap:VirtualizedContainerService.HintSize="1292,1456" sap2010:WorkflowViewState.IdRef="Flowchart_1">
@@ -247,7 +248,7 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <If Condition="[currentItem.Status.ToString=&quot;Queued&quot; OR currentItem.Status.ToString=&quot;null&quot;]" DisplayName="If - Status contains Queued or null" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
+                    <If Condition="[currentItem.Status.ToString=DictConfig(&quot;Asset_PerformerQueuedFileStatus&quot;) OR currentItem.Status.ToString=&quot;null&quot;]" DisplayName="If - Status contains Queued or null" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
                       <If.Then>
                         <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
                           <sap:WorkflowViewStateService.ViewState>
@@ -374,7 +375,7 @@
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <If Condition="[currentItem.Status.ToString=&quot;Rejected&quot;]" DisplayName="If - Any record contains Rejected" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+                            <If Condition="[currentItem.Status.ToString=DictConfig(&quot;Asset_PerformerRejectedFileStatus&quot;)]" DisplayName="If - Any record contains Rejected" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
                               <If.Then>
                                 <Sequence sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
                                   <sap:WorkflowViewStateService.ViewState>
@@ -445,7 +446,7 @@
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
                             <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Equals to Rejected" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_14" LogMessage="File Status contains Rejected" />
-                            <e:UpdateRecord_Source DisplayName="UpdateRecord_Source Status" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_2" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="Exception" UpdatedSourceRecord="[updatedRecordStatusException]">
+                            <e:UpdateRecord_Source DisplayName="UpdateRecord_Source Status" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_2" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="[DictConfig(&quot;Asset_PerformerExceptionSourceStatus&quot;)]" UpdatedSourceRecord="[updatedRecordStatusException]">
                               <e:UpdateRecord_Source.Account>
                                 <InArgument x:TypeArguments="x:String" />
                               </e:UpdateRecord_Source.Account>
@@ -498,7 +499,7 @@
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
                                       <If.Then>
                                         <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
                                           <sap:WorkflowViewStateService.ViewState>
@@ -617,7 +618,7 @@
                               <av:PointCollection x:Key="ConnectorLocation">990,907.666666666667 990,936.666666666667</av:PointCollection>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <Sequence sap2010:Annotation.AnnotationText="Set Source Entity Status to Completed" DisplayName="No Rejected" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                          <Sequence sap2010:Annotation.AnnotationText="Set Source Entity Status to Completed" DisplayName="No Rejected" sap:VirtualizedContainerService.HintSize="693.333333333333,1094.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
                             <Sequence.Variables>
                               <Variable x:TypeArguments="q:CommercialRiskQuotesSource" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new Source Status(Completed) if File status doesn't contain &quot;Rejected&quot;" Name="updatedRecordStatusCompleted" />
                             </Sequence.Variables>
@@ -628,7 +629,7 @@
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
                             <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Rejected" sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="File Status doesn't contain Rejected" />
-                            <e:UpdateRecord_Source sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_1" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="Completed" UpdatedSourceRecord="[updatedRecordStatusCompleted]">
+                            <e:UpdateRecord_Source sap:VirtualizedContainerService.HintSize="631.333333333333,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_Source_1" InputRecordID="[DocumentEntityRecordID.FileEntityID.SourceEntityID.Id]" Status="[DictConfig(&quot;Asset_PerformerCompletedSourceStatus&quot;)]" UpdatedSourceRecord="[updatedRecordStatusCompleted]">
                               <e:UpdateRecord_Source.Account>
                                 <InArgument x:TypeArguments="x:String" />
                               </e:UpdateRecord_Source.Account>
@@ -681,7 +682,7 @@
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=&quot;Email&quot;]" DisplayName="If - There is any output row after Sour Typefilter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after Sour Typefilter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
                                       <If.Then>
                                         <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_23">
                                           <sap:WorkflowViewStateService.ViewState>
@@ -720,7 +721,7 @@
                                 </scg:Dictionary>
                               </sap:WorkflowViewStateService.ViewState>
                             </ui:ForEach>
-                            <Assign DisplayName="Assign - Processed Flag Arg" sap:VirtualizedContainerService.HintSize="582,61" sap2010:WorkflowViewState.IdRef="Assign_7">
+                            <Assign DisplayName="Assign - Processed Flag Arg" sap:VirtualizedContainerService.HintSize="631.333333333333,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_7">
                               <Assign.To>
                                 <OutArgument x:TypeArguments="x:Boolean">[AllAttachmentProcessedFlag]</OutArgument>
                               </Assign.To>
@@ -749,7 +750,7 @@
                                       <av:PointCollection x:Key="ConnectorLocation">840,1207.66666666667 840,1322.66666666667 710,1322.66666666667</av:PointCollection>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <Sequence sap2010:Annotation.AnnotationText="Move Email to Completed Inbox UNREAD" DisplayName="Sequence - Source type Email Completed" sap:VirtualizedContainerService.HintSize="450,297.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                                  <Sequence sap2010:Annotation.AnnotationText="Move Email to Completed Inbox UNREAD" DisplayName="Sequence - Source type Email Completed" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_16">
                                     <sap:WorkflowViewStateService.ViewState>
                                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
