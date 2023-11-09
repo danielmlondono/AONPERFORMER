@@ -11,7 +11,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1129.33333333333,2922</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1435.33333333333,2922</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CSV_ExportExtractionResults_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -139,7 +139,7 @@
               <OutArgument x:TypeArguments="x:String">[CSVFilePath]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("CSV_ReportName")+"_"+Now.ToString("MM-dd-yyyy HH:mm:ss")+".xlsx"]</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("CSV_ReportName")+"_"+Now.ToString("MM-dd-yyyy-HH-mm-ss")+".xlsx"]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
