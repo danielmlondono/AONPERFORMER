@@ -29,9 +29,8 @@
 	"CredName_Office365Keys": "Aon UiPath_CommercialRisk_GraphAPI_Staging- AR3095",
         "PathOrchestratorFolderOffice365" : "UiPath_PS/Commercial Risk",
 
-	"CSV_RelativePath":"\\Downloads\\Placement Technology - Property Quotes Extract_",
-	"Json_RelativePath":"\\Downloads\\",
-	"OutputTemplate_ RelativePath":"\\Downloads\\Output_Template.xlsx",
+	"Asset_PerformerCSVSharedFolderPath":"EMEA-9_Quotes_PerfomerCSVPath",
+	"Asset_PerformerOutputTemplatePath":"EMEA-9_Quotes_PerfomerTemplatePath",
 	"CredName_ApplicationCredentialName": "",
 
 	"PathTemp": "<placeholder>",
