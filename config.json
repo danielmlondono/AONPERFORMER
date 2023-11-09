@@ -35,7 +35,9 @@
 
 	"PathTemp": "<placeholder>",
 	"UserValidatedDefaultValue":"N/A",
-	"UserValidatedExecuted":"User Validated",
+	"UserValidatedExec:uted":"User Validated",
+	"CSV_ReportName":"Placement Technology - Property Quotes Extract",
+	
 	
 	"ErrorsInRowLimit": "-1",
 	"FlagSummaryReport": "False",

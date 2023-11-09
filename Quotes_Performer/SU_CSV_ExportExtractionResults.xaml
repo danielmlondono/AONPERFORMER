@@ -139,7 +139,7 @@
               <OutArgument x:TypeArguments="x:String">[CSVFilePath]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")]</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("CSV_ReportName")+"_"+Now.ToString("MM-dd-yyyy")+".xlsx"]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
