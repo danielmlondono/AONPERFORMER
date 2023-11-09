@@ -34,6 +34,8 @@
 	"CredName_ApplicationCredentialName": "",
 
 	"PathTemp": "<placeholder>",
+	"UserValidatedDefaultValue":"N/A",
+	"UserValidatedExecuted":"User Validated",
 	
 	"ErrorsInRowLimit": "-1",
 	"FlagSummaryReport": "False",

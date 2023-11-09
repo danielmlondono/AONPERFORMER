@@ -147,7 +147,7 @@
               <OutArgument x:TypeArguments="x:String">[UserValidated]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">N/A</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("UserValidatedDefaultValue")]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
@@ -210,7 +210,7 @@
               <OutArgument x:TypeArguments="x:String">[UserValidated]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">User Validated</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("UserValidatedExecuted")]</InArgument>
             </Assign.Value>
           </Assign>
         </Sequence>
