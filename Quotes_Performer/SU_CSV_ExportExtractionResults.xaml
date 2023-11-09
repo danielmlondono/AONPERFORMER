@@ -11,7 +11,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1435.33333333333,2638.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1129.33333333333,2922</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CSV_ExportExtractionResults_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -113,7 +113,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="594.666666666667,2574" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="594.666666666667,2857.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] This is the output variable for the Read Json activity. Will contains Json data" Name="jsonData" />
       <Variable x:TypeArguments="njl:JObject" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Json data after the deserialize activity" Name="jsonObject" />
@@ -139,7 +139,7 @@
               <OutArgument x:TypeArguments="x:String">[CSVFilePath]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("CSV_ReportName")+"_"+Now.ToString("MM-dd-yyyy")+".xlsx"]</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("CSV_ReportName")+"_"+Now.ToString("MM-dd-yyyy HH:mm:ss")+".xlsx"]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
@@ -227,7 +227,7 @@
     </If>
     <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{DocumentEntityRecord.Id,DocumentEntityRecord.Id.ToString+&quot;_&quot;+(dtResult.RowCount+1).ToString,DocumentEntityRecord.CreateTime,SourceEntityRecord.ReceiveDate,SourceEntityRecord.ReceiveDate,UserValidated,DocumentEntityRecord.ValidationEnd,DocumentEntityRecord.ValidatedBy,FileEntityRecord.FilePath,SourceEntityRecord.FromName,SourceEntityRecord.FromEmail,SourceEntityRecord.ToName,SourceEntityRecord.ToEmail,SourceEntityRecord.Subject,SourceEntityRecord.SourceType,jsonObject(&quot;OutputResults&quot;)(&quot;Carrier Quote Reference&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Quote Issue Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Type of Quote&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Policy Reference&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Quote Validity Period&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Carrier Name&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Broker Name&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Underwriter Name&quot;).ToString,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Insured Name&quot;).ToString,&quot;&quot;,&quot;&quot;,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Inception Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Expiry Date&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Total Insured Value&quot;).ToString,&quot;&quot;,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Coverage Type&quot;).ToString,layerArray(0)(&quot;Layer Premium&quot;).ToString(),layerArray(0)(&quot;Attachment Point&quot;).ToString(),layerArray(0)(&quot;Limit of Liability&quot;).ToString(),layerArray(0)(&quot;Capacity&quot;).ToString(),jsonObject(&quot;OutputResults&quot;)(&quot;Deductible&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Sublimits&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Currency&quot;).ToString,&quot;&quot;,jsonObject(&quot;OutputResults&quot;)(&quot;Commission&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Conditions&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Subjectivities&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Exclusions&quot;).ToString,jsonObject(&quot;OutputResults&quot;)(&quot;Situation&quot;).ToString,layerArray(0)(&quot;TRIA Premium&quot;).ToString()}]" DataTable="[dtResult]" DisplayName="Add Data Row - CSV report After validation" sap:VirtualizedContainerService.HintSize="532.666666666667,191.333333333333" sap2010:WorkflowViewState.IdRef="AddDataRow_5" />
     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Write CSV" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="The bot will write the output CSV report" />
-    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application - CSV file path" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" Visible="False" WorkbookPath="[CSVFilePath]">
+    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application - CSV file path" sap:VirtualizedContainerService.HintSize="532.666666666667,308.666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" Visible="False" WorkbookPath="[CSVFilePath]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -245,7 +245,7 @@
       </ui:ExcelApplicationScope.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
