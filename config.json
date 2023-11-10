@@ -38,6 +38,7 @@
 	"UserValidatedExecuted":"User Validated",
 	"CSV_ReportName":"Placement Technology - Property Quotes Extract",
 	"Exception Subject":"System Exception - The bot was not able to move the input file",
+	"DefaultValidateExceptionFlag":"True",
 	
 	"ErrorsInRowLimit": "-1",
 	"FlagSummaryReport": "False",

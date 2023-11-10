@@ -65,8 +65,8 @@
         <InArgument x:TypeArguments="x:String" x:Key="EntityID">
           <Literal x:TypeArguments="x:String">1F25629C-2D78-EE11-B75C-000D3AB453B4</Literal>
         </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="ExceptionFlag">
-          <Literal x:TypeArguments="x:String">False</Literal>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="ExceptionFlag">
+          <Literal x:TypeArguments="x:Boolean" />
         </InArgument>
       </ui:AddQueueItem.ItemInformation>
     </ui:AddQueueItem>
