@@ -123,9 +123,9 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="Clear environment and temp." DisplayName="End state" sap:VirtualizedContainerService.HintSize="703.333333333333,2284" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
+    <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="Clear environment and temp." DisplayName="End state" sap:VirtualizedContainerService.HintSize="703.333333333333,2658.66666666667" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
       <State.Entry>
-        <Sequence DisplayName="End state sequence" sap:VirtualizedContainerService.HintSize="656.666666666667,2136.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+        <Sequence DisplayName="End state sequence" sap:VirtualizedContainerService.HintSize="656.666666666667,2511.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -175,22 +175,24 @@
               </Sequence>
             </If.Then>
           </If>
-          <Sequence DisplayName="Write output csv file" sap:VirtualizedContainerService.HintSize="594.666666666667,618.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_67">
+          <Sequence DisplayName="Write output csv file" sap:VirtualizedContainerService.HintSize="594.666666666667,806" sap2010:WorkflowViewState.IdRef="Sequence_67">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV file" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_36" LogMessage="Writing csv file" />
-            <If Condition="[(Not IsNothing(dtResult)) AndAlso dtResult.Rows.Count&gt;0]" DisplayName="If - Validate data table rows" sap:VirtualizedContainerService.HintSize="532.666666666667,442.666666666667" sap2010:WorkflowViewState.IdRef="If_12">
+            <If Condition="[(Not IsNothing(dtResult)) AndAlso dtResult.Rows.Count&gt;0]" DisplayName="If - Validate data table rows" sap:VirtualizedContainerService.HintSize="532.666666666667,630" sap2010:WorkflowViewState.IdRef="If_12">
               <If.Then>
-                <Sequence DisplayName="data table is not empty" sap:VirtualizedContainerService.HintSize="496,246.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_69">
+                <Sequence DisplayName="data table is not empty" sap:VirtualizedContainerService.HintSize="496,434" sap2010:WorkflowViewState.IdRef="Sequence_69">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <ui:AppendCsvFile Encoding="{x:Null}" DataTable="[dtResult]" Delimitator="Comma" DisplayName="Append to output CSV" FilePath="[csvFilePath]" sap:VirtualizedContainerService.HintSize="434,136" sap2010:WorkflowViewState.IdRef="AppendCsvFile_1" />
+                  <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Errors" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_38" LogMessage="No errors - Sending Email" />
+                  <as:SendEmailSMTP ArrPathAttachment="{x:Null}" MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" DisplayName="Send processing - error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_4" MailBody="[dictConfig(&quot;SuccessBody&quot;)]" MailRecipient="[DictConfig(&quot;Asset_ITEmail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[dictConfig(&quot;Successful execution&quot;)+Now.ToString(&quot;MM-dd-yyyy&quot;)]" />
                 </Sequence>
               </If.Then>
               <If.Else>
@@ -245,28 +247,45 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:CommentOut>
-          <If Condition="[counterErrorsInRow=0]" DisplayName="If - Error counter = 0" sap:VirtualizedContainerService.HintSize="594.666666666667,454" sap2010:WorkflowViewState.IdRef="If_11">
-            <If.Then>
-              <Sequence DisplayName="No errors" sap:VirtualizedContainerService.HintSize="450,258" sap2010:WorkflowViewState.IdRef="Sequence_61">
+          <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="594.666666666667,641.333333333333" sap2010:WorkflowViewState.IdRef="CommentOut_6">
+            <ui:CommentOut.Body>
+              <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="548.666666666667,561.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_71">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Errors" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_35" LogMessage="No errors - Sending Email" />
-                <as:SendEmailSMTP ArrPathAttachment="{x:Null}" MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" DisplayName="Send processing - error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="388,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_3" MailBody="[dictConfig(&quot;SuccessBody&quot;)]" MailRecipient="[DictConfig(&quot;Asset_ITEmail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[dictConfig(&quot;Successful execution&quot;)+Now.ToString(&quot;MM-dd-yyyy&quot;)]" />
+                <If Condition="[counterErrorsInRow=0]" DisplayName="If - Error counter = 0" sap:VirtualizedContainerService.HintSize="486.666666666667,450.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
+                  <If.Then>
+                    <Sequence DisplayName="No errors" sap:VirtualizedContainerService.HintSize="450,258" sap2010:WorkflowViewState.IdRef="Sequence_61">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - No Errors" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_35" LogMessage="No errors - Sending Email" />
+                      <as:SendEmailSMTP ArrPathAttachment="{x:Null}" MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" DisplayName="Send processing - error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="388,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_3" MailBody="[dictConfig(&quot;SuccessBody&quot;)]" MailRecipient="[DictConfig(&quot;Asset_ITEmail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[dictConfig(&quot;Successful execution&quot;)+Now.ToString(&quot;MM-dd-yyyy&quot;)]" />
+                    </Sequence>
+                  </If.Then>
+                  <If.Else>
+                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_62">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                    </Sequence>
+                  </If.Else>
+                </If>
               </Sequence>
-            </If.Then>
-            <If.Else>
-              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_62">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-              </Sequence>
-            </If.Else>
-          </If>
+            </ui:CommentOut.Body>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:CommentOut>
           <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Clear processing environment end state" sap:VirtualizedContainerService.HintSize="594.666666666667,115.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_36" UnSafe="False" WorkflowFileName="PROCESS\PR_ClearProcessEnvironment.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <scg:Dictionary x:TypeArguments="x:String, Argument" />
