@@ -12,7 +12,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1435.33333333333,2651.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1435.33333333333,1374</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CSV_ExportExtractionResults_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -60,6 +60,8 @@
       <x:String>ARF</x:String>
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -114,7 +116,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="594.666666666667,2586.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="512,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] This is the output variable for the Read Json activity. Will contains Json data" Name="jsonData" />
       <Variable x:TypeArguments="njl:JObject" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Json data after the deserialize activity" Name="jsonObject" />
@@ -131,9 +133,9 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - CSV file" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_6" LogMessage="Step 2.1 - Write CSV" />
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - JSON extraction" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_1" LogMessage="The bot will read the JSONResults file " />
-    <ui:MultipleAssign DisplayName="Multiple Assign - Initial assignments" sap:VirtualizedContainerService.HintSize="532.666666666667,131.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - CSV file" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_6" LogMessage="Step 2.1 - Write CSV" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - JSON extraction" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_1" LogMessage="The bot will read the JSONResults file " />
+    <ui:MultipleAssign DisplayName="Multiple Assign - Initial assignments" sap:VirtualizedContainerService.HintSize="450,131.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -141,7 +143,7 @@
               <OutArgument x:TypeArguments="x:String">[CSVFilePath]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("Asset_CSV_ReportName")+".xlsx"]</InArgument>
+              <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("Asset_CSV_ReportName")+".csv"]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
@@ -154,9 +156,21 @@
           </ui:AssignOperation>
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <ui:PathExists Resource="{x:Null}" DisplayName="Path Exists - CSV file" Exists="[reportFileCreated]" sap:VirtualizedContainerService.HintSize="532.666666666667,92" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[CSVFilePath]" PathType="File" />
-    <If Condition="[NOT reportFileCreated]" DisplayName="If - CSV file was created" sap:VirtualizedContainerService.HintSize="532.666666666667,464.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+    <ui:PathExists Resource="{x:Null}" DisplayName="Path Exists - CSV file" Exists="[reportFileCreated]" sap:VirtualizedContainerService.HintSize="450,92" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[CSVFilePath]" PathType="File" />
+    <If Condition="[NOT reportFileCreated]" DisplayName="If - CSV file was created" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
       <If.Then>
         <Sequence DisplayName="Not created" sap:VirtualizedContainerService.HintSize="450,268.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
           <sap:WorkflowViewStateService.ViewState>
@@ -177,8 +191,8 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:ReadTextFile File="{x:Null}" Content="[jsonData]" DisplayName="Read - input JSON file" FileName="[JSONResultsFilePath]" sap:VirtualizedContainerService.HintSize="532.666666666667,82" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Sequence sap2010:Annotation.AnnotationText="With this activities, the bot will change de Json object structure to write the CSV file" DisplayName="Json file handling" sap:VirtualizedContainerService.HintSize="532.666666666667,80" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <ui:ReadTextFile File="{x:Null}" Content="[jsonData]" DisplayName="Read - input JSON file" FileName="[JSONResultsFilePath]" sap:VirtualizedContainerService.HintSize="450,82" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Sequence sap2010:Annotation.AnnotationText="With this activities, the bot will change de Json object structure to write the CSV file" DisplayName="Json file handling" sap:VirtualizedContainerService.HintSize="450,80" sap2010:WorkflowViewState.IdRef="Sequence_5">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -212,10 +226,10 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <If Condition="[jsonObject.ContainsKey(&quot;ValidationResults&quot;)]" DisplayName="If - ValidationResults exists in the JSON file" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[jsonObject.ContainsKey(&quot;ValidationResults&quot;)]" DisplayName="If - ValidationResults exists in the JSON file" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
@@ -247,7 +261,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="[IndexLayerArray]" DisplayName="For Each - iterates the layer array" sap:VirtualizedContainerService.HintSize="532.666666666667,431.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[layerArray]">
+    <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="[IndexLayerArray]" DisplayName="For Each - iterates the layer array" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[layerArray]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="njl:JToken">
           <ActivityAction.Argument>
@@ -263,9 +277,15 @@
           </Sequence>
         </ActivityAction>
       </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Write CSV" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="The bot will write the output CSV report" />
-    <Assign DisplayName="Assign - New current file name" sap:VirtualizedContainerService.HintSize="532.666666666667,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Write CSV" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="The bot will write the output CSV report" />
+    <Assign DisplayName="Assign - New current file name" sap:VirtualizedContainerService.HintSize="450,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[ChangedFileName]</OutArgument>
       </Assign.To>
@@ -273,7 +293,7 @@
         <InArgument x:TypeArguments="x:String">[jsonObject("OutputResults")("Insured Name").ToString+"_"+jsonObject("OutputResults")("Carrier Name").ToString+"_"+DocumentEntityRecord.Id.ToString+"_"+(dtResult.RowCount).ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV completed" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_5" LogMessage="The output CSV file was completed" />
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - CSV" sap:VirtualizedContainerService.HintSize="532.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_7" LogMessage="Step 2.1 - Finished" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV completed" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_5" LogMessage="The output CSV file was completed" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - CSV" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_7" LogMessage="Step 2.1 - Finished" />
   </Sequence>
 </Activity>
