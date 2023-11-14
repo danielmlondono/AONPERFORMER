@@ -1,7 +1,9 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Process___Performer" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:a="clr-namespace:ARL_SystemOperations;assembly=ARL_SystemOperations" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:as="clr-namespace:ARL_Mail.SMTP;assembly=ARL_Mail" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:e="clr-namespace:EMEA_9_ARL_QuotesDataServiceEntities;assembly=EMEA-9_ARL_QuotesDataServiceEntities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Process___Performer" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:a="clr-namespace:ARL_SystemOperations;assembly=ARL_SystemOperations" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:as="clr-namespace:ARL_Mail.SMTP;assembly=ARL_Mail" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:e="clr-namespace:EMEA_9_ARL_QuotesDataServiceEntities;assembly=EMEA-9_ARL_QuotesDataServiceEntities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains current transaction data" Name="TransactionQueueItem" Type="InArgument(ui:QueueItem)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains Dict Config as dict&lt;Of string, string&gt;" Name="DictConfig" Type="InArgument(scg:Dictionary(x:String, x:String))" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains output datatable" Name="DtResults" Type="InOutArgument(sd:DataTable)" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Output CSV file path" Name="CsvFilepath" Type="OutArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -53,6 +55,8 @@
       <x:String>System.Security</x:String>
       <x:String>UiPath.Mail</x:String>
       <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -193,10 +197,7 @@
         <al:ReportProgressStep DisplayName="Report progress step 1" sap:VirtualizedContainerService.HintSize="434,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_1" ProgressStepMessage="Step 1 finished" TransactionQueueItem="[TransactionQueueItem]" />
       </Sequence>
       <FlowStep.Next>
-        <FlowDecision x:Name="__ReferenceID1" DisplayName="Exception Flag" sap:VirtualizedContainerService.HintSize="82,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
-          <FlowDecision.Condition>
-            <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="TransactionQueueItem.SpecificContent(&quot;ExceptionFlag&quot;).ToString.ToLower.Equals(DictConfig(&quot;DefaultValidateExceptionFlag&quot;).ToLower)" />
-          </FlowDecision.Condition>
+        <FlowDecision x:Name="__ReferenceID1" Condition="[TransactionQueueItem.SpecificContent(&quot;ExceptionFlag&quot;).ToString.ToLower.Equals(DictConfig(&quot;DefaultValidateExceptionFlag&quot;).ToLower)]" DisplayName="Exception Flag" sap:VirtualizedContainerService.HintSize="82,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -435,10 +436,7 @@
                   <av:PointCollection x:Key="ConnectorLocation">520,405 520,455</av:PointCollection>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <Sequence sap2010:Annotation.AnnotationText="Exception Flag is equal to False" DisplayName="Step 2 - Get Quotes Extraction" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_4">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Output CSV file path" Name="csvFilepath" />
-                </Sequence.Variables>
+              <Sequence sap2010:Annotation.AnnotationText="Exception Flag is equal to False" DisplayName="Step 2 - Get Quotes Extraction" sap:VirtualizedContainerService.HintSize="550.666666666667,979.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -457,13 +455,30 @@
                       <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Exception flag is False" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Exception Flag = False" />
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Quotes_Performer\CSV_ExportExtractionResults.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="388,115.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Quotes_Performer\SU_CSV_ExportExtractionResults.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InArgument x:TypeArguments="x:String" x:Key="JSONResultsFilePath">[documentRecordResults.ResultsJsonFilepath]</InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="CSVFilePath">[csvFilepath]</OutArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">[fileEntityRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">[documentRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">[sourceEntityRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">[DictConfig]</InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">[changedFileName]</OutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="JSONResultsFilePath">
+                            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="documentRecordResults.ResultsJsonFilepath" />
+                          </InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="CSVFilePath">
+                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="CsvFilepath" />
+                          </OutArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesFile" ExpressionText="fileEntityRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesDocument" ExpressionText="documentRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesSource" ExpressionText="sourceEntityRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">
+                            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="DictConfig" />
+                          </InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">
+                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="changedFileName" />
+                          </OutArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="DtResult">
+                            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="DtResults" />
+                          </InOutArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Sequence>
