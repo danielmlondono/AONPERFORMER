@@ -40,6 +40,8 @@
 	"Exception Subject":"System Exception - The bot was not able to move the input file",
 	"DefaultValidateExceptionFlag":"True",
 	"SheetName":"Output_Template",
+	"SuccessBody":"Hello team - The current execution was successful ",
+	"Successful execution":"Successful execution",
 	
 	"ErrorsInRowLimit": "-1",
 	"FlagSummaryReport": "False",
