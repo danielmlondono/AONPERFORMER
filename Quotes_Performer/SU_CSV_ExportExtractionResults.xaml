@@ -113,7 +113,6 @@
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Linq.Async</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="512,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -284,7 +283,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Write CSV" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="The bot will write the output CSV report" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Write Add rows to dt" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="The bot will write the output CSV report" />
     <Assign DisplayName="Assign - New current file name" sap:VirtualizedContainerService.HintSize="450,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[ChangedFileName]</OutArgument>
@@ -293,7 +292,7 @@
         <InArgument x:TypeArguments="x:String">[jsonObject("OutputResults")("Insured Name").ToString+"_"+jsonObject("OutputResults")("Carrier Name").ToString+"_"+DocumentEntityRecord.Id.ToString+"_"+(dtResult.RowCount).ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV completed" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_5" LogMessage="The output CSV file was completed" />
-    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - CSV" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_7" LogMessage="Step 2.1 - Finished" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV completed" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_5" LogMessage="The current output data was added to the output data table" />
+    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2.1 - Add rows to output datatable" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_7" LogMessage="Step 2.1 - Finished" />
   </Sequence>
 </Activity>

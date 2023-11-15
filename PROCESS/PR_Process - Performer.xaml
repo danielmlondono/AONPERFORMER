@@ -225,7 +225,7 @@
                 </sap:WorkflowViewStateService.ViewState>
                 <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2 - Flag is True" sap:VirtualizedContainerService.HintSize="438.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="Step 2 - Flag is True" />
                 <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - ExceptionFlag = True" sap:VirtualizedContainerService.HintSize="438.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_2" LogMessage="Exception Flag = True" />
-                <ui:MultipleAssign sap2010:Annotation.AnnotationText="- File path from File entity&#xA;- Updating File Path with Exceptions&#xA;- File name" DisplayName="Multiple Assign - Initial and exception paths" sap:VirtualizedContainerService.HintSize="438.666666666667,193.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+                <ui:MultipleAssign sap2010:Annotation.AnnotationText="- File path from File entity&#xA;- Updating File Path with Exceptions&#xA;- File name" DisplayName="Multiple Assign - Initial and exception paths" sap:VirtualizedContainerService.HintSize="438.666666666667,224" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
                   <ui:MultipleAssign.AssignOperations>
                     <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                       <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -242,6 +242,14 @@
                         </ui:AssignOperation.To>
                         <ui:AssignOperation.Value>
                           <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerExceptionFolder")+initialPathFromFileEntity]</InArgument>
+                        </ui:AssignOperation.Value>
+                      </ui:AssignOperation>
+                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                        <ui:AssignOperation.To>
+                          <OutArgument x:TypeArguments="x:String">[CsvFilepath]</OutArgument>
+                        </ui:AssignOperation.To>
+                        <ui:AssignOperation.Value>
+                          <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("Asset_CSV_ReportName")+".csv"]</InArgument>
                         </ui:AssignOperation.Value>
                       </ui:AssignOperation>
                     </scg:List>
@@ -301,7 +309,7 @@
                       <av:PointCollection x:Key="ConnectorLocation">100,935 100,1050 230,1050</av:PointCollection>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <Sequence sap2010:Annotation.AnnotationText="The File path in the File Entity is updated" DisplayName="Step 3 - Update File Path" sap:VirtualizedContainerService.HintSize="550.666666666667,889.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                  <Sequence sap2010:Annotation.AnnotationText="The File path in the File Entity is updated" DisplayName="Step 3 - Update File Path" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_21">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -455,30 +463,14 @@
                       <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Exception flag is False" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Exception Flag = False" />
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Quotes_Performer\CSV_ExportExtractionResults.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="388,115.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Quotes_Performer\SU_CSV_ExportExtractionResults.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InArgument x:TypeArguments="x:String" x:Key="JSONResultsFilePath">
-                            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="documentRecordResults.ResultsJsonFilepath" />
-                          </InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="CSVFilePath">
-                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="CsvFilepath" />
-                          </OutArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">
-                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesFile" ExpressionText="fileEntityRecordResults" />
-                          </InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">
-                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesDocument" ExpressionText="documentRecordResults" />
-                          </InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">
-                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesSource" ExpressionText="sourceEntityRecordResults" />
-                          </InArgument>
-                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">
-                            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="DictConfig" />
-                          </InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">
-                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="changedFileName" />
-                          </OutArgument>
-                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="DtResult">
-                            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="DtResults" />
-                          </InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="JSONResultsFilePath">[documentRecordResults.ResultsJsonFilepath]</InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="CSVFilePath">[CsvFilepath]</OutArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">[fileEntityRecordResults]</InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">[documentRecordResults]</InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">[sourceEntityRecordResults]</InArgument>
+                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">[DictConfig]</InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">[changedFileName]</OutArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="DtResult">[DtResults]</InOutArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Sequence>
@@ -508,8 +500,8 @@
                     </Catch>
                   </TryCatch.Catches>
                 </TryCatch>
-                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV done" sap:VirtualizedContainerService.HintSize="488.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_12" LogMessage="Write output CSV report - Done" />
-                <al:ReportProgressStep DisplayName="Report progress step 2 - Flag=False" sap:VirtualizedContainerService.HintSize="488.666666666667,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_5" ProgressStepMessage="Step 2 - CSV report - finished" TransactionQueueItem="[TransactionQueueItem]" />
+                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV done" sap:VirtualizedContainerService.HintSize="488.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_12" LogMessage="The current data was added to the output datatable" />
+                <al:ReportProgressStep DisplayName="Report progress step 2 - Flag=False" sap:VirtualizedContainerService.HintSize="488.666666666667,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_5" ProgressStepMessage="Step 2 - Data extraction for csv report - finished" TransactionQueueItem="[TransactionQueueItem]" />
               </Sequence>
               <FlowStep.Next>
                 <FlowStep x:Name="__ReferenceID7">
