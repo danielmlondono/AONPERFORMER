@@ -1,6 +1,5 @@
 {
   "name": "EMEA-9_CommercialRisk_Quotes_Performer",
-  "projectId": "85fc6ae8-2890-4ab4-bdda-f7e60340a25e",
   "description": "Quotes Performer",
   "main": "Main.xaml",
   "dependencies": {
@@ -25,7 +24,7 @@
   ],
   "schemaVersion": "4.0",
   "studioVersion": "21.10.3.0",
-  "projectVersion": "1.0.0",
+  "projectVersion": "1.0.5",
   "runtimeOptions": {
     "autoDispose": false,
     "netFrameworkLazyLoading": false,
@@ -33,7 +32,6 @@
     "isAttended": false,
     "requiresUserInteraction": true,
     "supportsPersistence": false,
-    "workflowSerialization": "DataContract",
     "excludedLoggedData": [
       "Private:*",
       "*password*"
@@ -55,8 +53,7 @@
       "ignoredFiles": []
     },
     "fileInfoCollection": [],
-    "modernBehavior": true,
-    "saveToCloud": false
+    "modernBehavior": true
   },
   "expressionLanguage": "VisualBasic",
   "entryPoints": [
