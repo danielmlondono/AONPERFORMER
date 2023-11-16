@@ -1,8 +1,8 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="SU_SystemCheckAllDocumentProcessed" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:a="clr-namespace:ARL_Microsoft365;assembly=ARL_Microsoft365" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:e="clr-namespace:EMEA_9_ARL_QuotesDataServiceEntities;assembly=EMEA-9_ARL_QuotesDataServiceEntities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:uda="clr-namespace:UiPath.DataService.Activities;assembly=UiPath.DataService.Activities.Core" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Document Entity ID to get Source and File ID based on the Data Service Schema" Name="DocumentEntityRecordID" Type="InArgument(q:CommercialRiskQuotesDocument)" />
-    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] True if the bot was able to process every single Email" Name="AllAttachmentProcessedFlag" Type="OutArgument(x:Boolean)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains Dict Config as dict&lt;Of string, string&gt;" Name="DictConfig" Type="InArgument(scg:Dictionary(x:String, x:String))" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] True if the bot was able to process every single Email" Name="FlagAllAttachmentProcessed" Type="OutArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -109,17 +109,16 @@
       <AssemblyReference>Microsoft.Graph</AssemblyReference>
       <AssemblyReference>Microsoft.Graph.Core</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Flowchart sap2010:Annotation.AnnotationText="Checks if All Attachment associated with the Email are processed with the help of Document Entity Statuses" DisplayName="SU_SystemCheckAllDocumentProcessed" sap:VirtualizedContainerService.HintSize="1292,1456" sap2010:WorkflowViewState.IdRef="Flowchart_1">
     <Flowchart.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Source Entity Id as String" Name="sourceEntityID" />
       <Variable x:TypeArguments="scg:IList(q:CommercialRiskQuotesFile)" sap2010:Annotation.AnnotationText="[REQUIRED] [REQUIRED] Will contain records if the File Source Entity ID Relationship Query Result is equal to the current Source Entity ID" Name="filterSourceIDResults" />
-      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the File Status contains &quot;Queued&quot; or &quot;null&quot;" Name="counter" />
-      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the File Status contains &quot;Rejected&quot;" Name="counterRejected" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the File Status contains &quot;Queued&quot; or &quot;null&quot;" Name="counterQueuedNullFileStatus" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the File Status contains &quot;Rejected&quot;" Name="counterRejectedFileStatus" />
       <Variable x:TypeArguments="q:CommercialRiskQuotesSource" sap2010:Annotation.AnnotationText="[REQUIRED] Contains Source Entity records By ID" Name="sourceEntityRecordResults" />
-      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the SourceID.Source Type = Email" Name="counterEmail" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Auxiliar counter to determine if the SourceID.Source Type = Email" Name="counterEmailType" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -211,7 +210,7 @@
                 <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Int32">[Counter]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Int32">[counterQueuedNullFileStatus]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
                       <InArgument x:TypeArguments="x:Int32">0</InArgument>
@@ -219,7 +218,7 @@
                   </ui:AssignOperation>
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Int32">[CounterRejected]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Int32">[counterRejectedFileStatus]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
                       <InArgument x:TypeArguments="x:Int32">0</InArgument>
@@ -227,7 +226,7 @@
                   </ui:AssignOperation>
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Int32">[CounterEmail]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Int32">[counterEmailType]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
                       <InArgument x:TypeArguments="x:Int32">0</InArgument>
@@ -259,10 +258,10 @@
                           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null 1" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Queued or null status exists" />
                           <Assign DisplayName="Assign - increase counter Queued or null" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
                             <Assign.To>
-                              <OutArgument x:TypeArguments="x:Int32">[counter]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Int32">[counterQueuedNullFileStatus]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
-                              <InArgument x:TypeArguments="x:Int32">[counter+1]</InArgument>
+                              <InArgument x:TypeArguments="x:Int32">[counterQueuedNullFileStatus+1]</InArgument>
                             </Assign.Value>
                           </Assign>
                         </Sequence>
@@ -289,7 +288,7 @@
             </ui:ForEach>
           </Sequence>
           <FlowStep.Next>
-            <FlowDecision x:Name="__ReferenceID2" Condition="[Counter&gt;0]" DisplayName="Status=Queued or null" sap:VirtualizedContainerService.HintSize="124.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+            <FlowDecision x:Name="__ReferenceID2" Condition="[counterQueuedNullFileStatus&gt;0]" DisplayName="Status=Queued or null" sap:VirtualizedContainerService.HintSize="124.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -318,7 +317,7 @@
                     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Queued or null 2" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_12" LogMessage="File Status contains Queued or null" />
                     <Assign DisplayName="Assign - Processed Flag output Arg " sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_6">
                       <Assign.To>
-                        <OutArgument x:TypeArguments="x:Boolean">[AllAttachmentProcessedFlag]</OutArgument>
+                        <OutArgument x:TypeArguments="x:Boolean">[FlagAllAttachmentProcessed]</OutArgument>
                       </Assign.To>
                       <Assign.Value>
                         <InArgument x:TypeArguments="x:Boolean">True</InArgument>
@@ -386,10 +385,10 @@
                                   <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Rejected" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_6" LogMessage="Rejected status exists" />
                                   <Assign DisplayName="Assign - increase counterRejected var" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_3">
                                     <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[counterRejected]</OutArgument>
+                                      <OutArgument x:TypeArguments="x:Int32">[counterRejectedFileStatus]</OutArgument>
                                     </Assign.To>
                                     <Assign.Value>
-                                      <InArgument x:TypeArguments="x:Int32">[counterRejected+1]</InArgument>
+                                      <InArgument x:TypeArguments="x:Int32">[counterRejectedFileStatus+1]</InArgument>
                                     </Assign.Value>
                                   </Assign>
                                 </Sequence>
@@ -416,7 +415,7 @@
                     </ui:ForEach>
                   </Sequence>
                   <FlowStep.Next>
-                    <FlowDecision x:Name="__ReferenceID5" Condition="[CounterRejected &gt; 0]" DisplayName="Status = Rejected" sap:VirtualizedContainerService.HintSize="96.6666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                    <FlowDecision x:Name="__ReferenceID5" Condition="[counterRejectedFileStatus &gt; 0]" DisplayName="Status = Rejected" sap:VirtualizedContainerService.HintSize="96.6666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -435,7 +434,7 @@
                               <av:PointCollection x:Key="ConnectorLocation">470,903.333333333334 470,926.666666666667 473.333333333333,926.666666666667</av:PointCollection>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <Sequence sap2010:Annotation.AnnotationText="Any record contains Rejected. Set Source entity Status to Exception" DisplayName="Rejected" sap:VirtualizedContainerService.HintSize="200,146.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                          <Sequence sap2010:Annotation.AnnotationText="Any record contains Rejected. Set Source entity Status to Exception" DisplayName="Rejected" sap:VirtualizedContainerService.HintSize="693.333333333333,969.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
                             <Sequence.Variables>
                               <Variable x:TypeArguments="q:CommercialRiskQuotesSource" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new Source Status(Exception) if File status contains &quot;Rejected&quot;" Name="updatedRecordStatusException" />
                             </Sequence.Variables>
@@ -499,7 +498,7 @@
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after SourceID filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
                                       <If.Then>
                                         <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
                                           <sap:WorkflowViewStateService.ViewState>
@@ -510,10 +509,10 @@
                                           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Email" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_18" LogMessage="Source Type is equal to Email" />
                                           <Assign DisplayName="Assign - increase counter Email" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
                                             <Assign.To>
-                                              <OutArgument x:TypeArguments="x:Int32">[CounterEmail]</OutArgument>
+                                              <OutArgument x:TypeArguments="x:Int32">[counterEmailType]</OutArgument>
                                             </Assign.To>
                                             <Assign.Value>
-                                              <InArgument x:TypeArguments="x:Int32">[CounterEmail+1]</InArgument>
+                                              <InArgument x:TypeArguments="x:Int32">[counterEmailType+1]</InArgument>
                                             </Assign.Value>
                                           </Assign>
                                         </Sequence>
@@ -540,7 +539,7 @@
                             </ui:ForEach>
                           </Sequence>
                           <FlowStep.Next>
-                            <FlowDecision x:Name="__ReferenceID8" Condition="[CounterEmail &gt; 0]" DisplayName="Source Type = Email" sap:VirtualizedContainerService.HintSize="112.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                            <FlowDecision x:Name="__ReferenceID8" Condition="[counterEmailType &gt; 0]" DisplayName="Source Type = Email" sap:VirtualizedContainerService.HintSize="112.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
                               <sap:WorkflowViewStateService.ViewState>
                                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -618,7 +617,7 @@
                               <av:PointCollection x:Key="ConnectorLocation">990,907.666666666667 990,936.666666666667</av:PointCollection>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <Sequence sap2010:Annotation.AnnotationText="Set Source Entity Status to Completed" DisplayName="No Rejected" sap:VirtualizedContainerService.HintSize="693.333333333333,1094.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                          <Sequence sap2010:Annotation.AnnotationText="Set Source Entity Status to Completed" DisplayName="No Rejected" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_12">
                             <Sequence.Variables>
                               <Variable x:TypeArguments="q:CommercialRiskQuotesSource" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new Source Status(Completed) if File status doesn't contain &quot;Rejected&quot;" Name="updatedRecordStatusCompleted" />
                             </Sequence.Variables>
@@ -682,7 +681,7 @@
                                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       </scg:Dictionary>
                                     </sap:WorkflowViewStateService.ViewState>
-                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after Sour Typefilter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
+                                    <If Condition="[currentItem.SourceEntityID.SourceType.ToString=DictConfig(&quot;Asset_PerformerEmailSourceType&quot;)]" DisplayName="If - There is any output row after Source Type filter" sap:VirtualizedContainerService.HintSize="532.666666666667,457.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
                                       <If.Then>
                                         <Sequence DisplayName="Counter" sap:VirtualizedContainerService.HintSize="496,261.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_23">
                                           <sap:WorkflowViewStateService.ViewState>
@@ -693,10 +692,10 @@
                                           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - equal to Email" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_19" LogMessage="Source Type is equal to Email" />
                                           <Assign DisplayName="Assign - increase counter" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_9">
                                             <Assign.To>
-                                              <OutArgument x:TypeArguments="x:Int32">[CounterEmail]</OutArgument>
+                                              <OutArgument x:TypeArguments="x:Int32">[counterEmailType]</OutArgument>
                                             </Assign.To>
                                             <Assign.Value>
-                                              <InArgument x:TypeArguments="x:Int32">[CounterEmail+1]</InArgument>
+                                              <InArgument x:TypeArguments="x:Int32">[counterEmailType+1]</InArgument>
                                             </Assign.Value>
                                           </Assign>
                                         </Sequence>
@@ -723,7 +722,7 @@
                             </ui:ForEach>
                             <Assign DisplayName="Assign - Processed Flag Arg" sap:VirtualizedContainerService.HintSize="631.333333333333,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_7">
                               <Assign.To>
-                                <OutArgument x:TypeArguments="x:Boolean">[AllAttachmentProcessedFlag]</OutArgument>
+                                <OutArgument x:TypeArguments="x:Boolean">[FlagAllAttachmentProcessed]</OutArgument>
                               </Assign.To>
                               <Assign.Value>
                                 <InArgument x:TypeArguments="x:Boolean">True</InArgument>
@@ -731,7 +730,7 @@
                             </Assign>
                           </Sequence>
                           <FlowStep.Next>
-                            <FlowDecision x:Name="__ReferenceID9" Condition="[CounterEmail &gt; 0]" DisplayName="Source Type=Email" sap:VirtualizedContainerService.HintSize="106,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
+                            <FlowDecision x:Name="__ReferenceID9" Condition="[counterEmailType &gt; 0]" DisplayName="Source Type=Email" sap:VirtualizedContainerService.HintSize="106,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
                               <sap:WorkflowViewStateService.ViewState>
                                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>

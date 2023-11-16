@@ -1,13 +1,13 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="CSV_ExportExtractionResults" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:al="clr-namespace:ARL_Framework.Logging_and_Reporting;assembly=ARL_Framework" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:q="clr-namespace:QuotesEntities_Legacy;assembly=DataService.QuotesEntities_Legacy" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Input Json file path" Name="JSONResultsFilePath" Type="InArgument(x:String)" />
-    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains the output CSV report File path" Name="CSVFilePath" Type="OutArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains the File entity record data to update the CSV datatable" Name="FileEntityRecord" Type="InArgument(q:CommercialRiskQuotesFile)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Source entity record data to update the CSV datatable" Name="DocumentEntityRecord" Type="InArgument(q:CommercialRiskQuotesDocument)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Source entity record data to update the CSV datatable" Name="SourceEntityRecord" Type="InArgument(q:CommercialRiskQuotesSource)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains Dict Config as dict&lt;Of string, string&gt;" Name="DictConfig" Type="InArgument(scg:Dictionary(x:String, x:String))" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains new file name convention" Name="ChangedFileName" Type="OutArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] DataTable initialized. The CSV records will be updated here." Name="DtResult" Type="InOutArgument(sd:DataTable)" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Input Json file path" Name="PathJSONResultsFile" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains the output CSV report File path" Name="PathCSVFile" Type="OutArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -122,9 +122,9 @@
       <Variable x:TypeArguments="njl:JToken" sap2010:Annotation.AnnotationText="[REQUIRED] JObject to Jtoken" Name="layerTable" />
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Json data as String" Name="strLayertable" />
       <Variable x:TypeArguments="njl:JArray" sap2010:Annotation.AnnotationText="[REQUIRED] Array of String Json data" Name="layerArray" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] by default it's &quot;N/A&quot;. It will change to &quot;User validated&quot; if the ValidationResults key exists in the JSON file" Name="UserValidated" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] by default it's &quot;N/A&quot;. It will change to &quot;User validated&quot; if the ValidationResults key exists in the JSON file" Name="userValidated" />
       <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="[REQUIRED] Index to determine the current row in the layer table" Name="IndexLayerArray" />
-      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="[REQUIRED] Boolean - True if the output  CSV file was previously generated." Name="reportFileCreated" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="[REQUIRED] Boolean - True if the output  CSV file was previously generated." Name="flagReportFileCreated" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -139,7 +139,7 @@
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[CSVFilePath]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[PathCSVFile]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
               <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("Asset_CSV_ReportName")+".csv"]</InArgument>
@@ -147,7 +147,7 @@
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[UserValidated]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[userValidated]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
               <InArgument x:TypeArguments="x:String">[DictConfig("UserValidatedDefaultValue")]</InArgument>
@@ -162,8 +162,8 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <ui:PathExists Resource="{x:Null}" DisplayName="Path Exists - CSV file" Exists="[reportFileCreated]" sap:VirtualizedContainerService.HintSize="450,92" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[CSVFilePath]" PathType="File" />
-    <If Condition="[NOT reportFileCreated]" DisplayName="If - CSV file was created" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+    <ui:PathExists Resource="{x:Null}" DisplayName="Path Exists - CSV file" Exists="[flagReportFileCreated]" sap:VirtualizedContainerService.HintSize="450,92" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[PathCSVFile]" PathType="File" />
+    <If Condition="[NOT flagReportFileCreated]" DisplayName="If - CSV file was created" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="If_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -177,7 +177,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:CopyFile ContinueOnError="{x:Null}" Destination="[CSVFilePath]" DisplayName="Copy the CSV Template" sap:VirtualizedContainerService.HintSize="388,158" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[DictConfig(&quot;Asset_PerformerOutputTemplatePath&quot;)]" />
+          <ui:CopyFile ContinueOnError="{x:Null}" Destination="[PathCSVFile]" DisplayName="Copy the CSV Template" sap:VirtualizedContainerService.HintSize="388,158" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[DictConfig(&quot;Asset_PerformerOutputTemplatePath&quot;)]" />
         </Sequence>
       </If.Then>
       <If.Else>
@@ -190,7 +190,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:ReadTextFile File="{x:Null}" Content="[jsonData]" DisplayName="Read - input JSON file" FileName="[JSONResultsFilePath]" sap:VirtualizedContainerService.HintSize="450,82" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:ReadTextFile File="{x:Null}" Content="[jsonData]" DisplayName="Read - input JSON file" FileName="[PathJSONResultsFile]" sap:VirtualizedContainerService.HintSize="450,82" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
     <Sequence sap2010:Annotation.AnnotationText="With this activities, the bot will change de Json object structure to write the CSV file" DisplayName="Json file handling" sap:VirtualizedContainerService.HintSize="450,80" sap2010:WorkflowViewState.IdRef="Sequence_5">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -242,7 +242,7 @@
           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Validation" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_2" LogMessage="Validation station was needed" />
           <Assign DisplayName="Assign - User Validated for csv report" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[UserValidated]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[userValidated]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">[DictConfig("UserValidatedExecuted")]</InArgument>

@@ -3,7 +3,7 @@
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains current transaction data" Name="TransactionQueueItem" Type="InArgument(ui:QueueItem)" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains Dict Config as dict&lt;Of string, string&gt;" Name="DictConfig" Type="InArgument(scg:Dictionary(x:String, x:String))" />
     <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Contains output datatable" Name="DtResults" Type="InOutArgument(sd:DataTable)" />
-    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Output CSV file path" Name="CsvFilepath" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="[REQUIRED] Output CSV file path" Name="PathCsvFile" Type="OutArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -119,13 +119,13 @@
       <Variable x:TypeArguments="q:CommercialRiskQuotesDocument" sap2010:Annotation.AnnotationText="[REQUIRED] Gets the Document Record By ID" Name="documentRecordResults" />
       <Variable x:TypeArguments="q:CommercialRiskQuotesSource" sap2010:Annotation.AnnotationText="[REQUIRED] Gets the Source Record By ID" Name="sourceEntityRecordResults" />
       <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] Gets the File Record By ID" Name="fileEntityRecordResults" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the current FileEntity File Path" Name="initialPathFromFileEntity" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new value for the File Entity File Path if the exception Flag is True" Name="exceptionsPath" />
-      <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the File record updated if the Exception flag is True" Name="updatedRecordException" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new value for the File Entity File Path if the exception Flag is False" Name="completedPath" />
-      <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the File record updated if the Exception flag is False" Name="updatedRecordCompleted" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the current FileEntity File Path" Name="pathInitialFromFileEntity" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new value for the File Entity File Path if the exception Flag is True" Name="pathExceptions" />
+      <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the File record updated if the Exception flag is True" Name="updatedRecordExceptionValue" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the new value for the File Entity File Path if the exception Flag is False" Name="pathCompleted" />
+      <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the File record updated if the Exception flag is False" Name="updatedRecordCompletedValue" />
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] contains new file name convention" Name="changedFileName" />
-      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Email body if an exception took place moving the current input file" Name="EmailBody" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Email body if an exception took place moving the current input file" Name="emailBody" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -149,7 +149,7 @@
           <av:PointCollection x:Key="ConnectorLocation">310,255 310,296.666666666667</av:PointCollection>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence sap2010:Annotation.AnnotationText="Assign the entityId for document, File and Source" DisplayName="Step 1 - Assign Entity ID" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <Sequence sap2010:Annotation.AnnotationText="Assign the Id for Document, File and Source entities." DisplayName="Step 1 - Assign Entity ID" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -197,7 +197,7 @@
         <al:ReportProgressStep DisplayName="Report progress step 1" sap:VirtualizedContainerService.HintSize="434,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_1" ProgressStepMessage="Step 1 finished" TransactionQueueItem="[TransactionQueueItem]" />
       </Sequence>
       <FlowStep.Next>
-        <FlowDecision x:Name="__ReferenceID1" Condition="[TransactionQueueItem.SpecificContent(&quot;ExceptionFlag&quot;).ToString.ToLower.Equals(DictConfig(&quot;DefaultValidateExceptionFlag&quot;).ToLower)]" DisplayName="Exception Flag" sap:VirtualizedContainerService.HintSize="82,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+        <FlowDecision x:Name="__ReferenceID1" Condition="[TransactionQueueItem.SpecificContent(&quot;ExceptionFlag&quot;).ToString.ToLower.Equals(DictConfig(&quot;FlagDefaultValidateException&quot;).ToLower)]" DisplayName="Exception Flag" sap:VirtualizedContainerService.HintSize="82,86.6666666666667" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -223,14 +223,14 @@
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2 - Flag is True" sap:VirtualizedContainerService.HintSize="438.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="Step 2 - Flag is True" />
-                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - ExceptionFlag = True" sap:VirtualizedContainerService.HintSize="438.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_2" LogMessage="Exception Flag = True" />
-                <ui:MultipleAssign sap2010:Annotation.AnnotationText="- File path from File entity&#xA;- Updating File Path with Exceptions&#xA;- File name" DisplayName="Multiple Assign - Initial and exception paths" sap:VirtualizedContainerService.HintSize="438.666666666667,224" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 2 - Flag is True" sap:VirtualizedContainerService.HintSize="536,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_15" LogMessage="Step 2 - Flag is True" />
+                <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - ExceptionFlag = True" sap:VirtualizedContainerService.HintSize="536,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_2" LogMessage="Exception Flag = True" />
+                <ui:MultipleAssign sap2010:Annotation.AnnotationText="- File path from File entity&#xA;- Updating File Path with Exceptions&#xA;- File name" DisplayName="Multiple Assign - Initial and exception paths" sap:VirtualizedContainerService.HintSize="536,224" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
                   <ui:MultipleAssign.AssignOperations>
                     <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                       <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
                         <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="x:String">[initialPathFromFileEntity]</OutArgument>
+                          <OutArgument x:TypeArguments="x:String">[pathInitialFromFileEntity]</OutArgument>
                         </ui:AssignOperation.To>
                         <ui:AssignOperation.Value>
                           <InArgument x:TypeArguments="x:String">[Path.GetFileName(fileEntityRecordResults.FilePath.ToString)]</InArgument>
@@ -238,15 +238,15 @@
                       </ui:AssignOperation>
                       <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
                         <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="x:String">[exceptionsPath]</OutArgument>
+                          <OutArgument x:TypeArguments="x:String">[pathExceptions]</OutArgument>
                         </ui:AssignOperation.To>
                         <ui:AssignOperation.Value>
-                          <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerExceptionFolder")+initialPathFromFileEntity]</InArgument>
+                          <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerExceptionFolder")+pathInitialFromFileEntity]</InArgument>
                         </ui:AssignOperation.Value>
                       </ui:AssignOperation>
                       <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
                         <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="x:String">[CsvFilepath]</OutArgument>
+                          <OutArgument x:TypeArguments="x:String">[PathCsvFile]</OutArgument>
                         </ui:AssignOperation.To>
                         <ui:AssignOperation.Value>
                           <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCSVSharedFolderPath")+DictConfig("Asset_CSV_ReportName")+".csv"]</InArgument>
@@ -260,15 +260,15 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:MultipleAssign>
-                <TryCatch DisplayName="Try Catch - Moving file" sap:VirtualizedContainerService.HintSize="438.666666666667,485.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                <TryCatch DisplayName="Try Catch - Moving file" sap:VirtualizedContainerService.HintSize="536,763.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
                   <TryCatch.Try>
-                    <a:MoveFile CountRetries="[Convert.ToInt32(dictConfig(&quot;Asset_RetriesCount&quot;))]" DisplayName="MoveFile - Exceptions" sap:VirtualizedContainerService.HintSize="334,246" sap2010:WorkflowViewState.IdRef="MoveFile_1" PathFromFile="[fileEntityRecordResults.FilePath.ToString]" PathToFolder="[Path.GetDirectoryName(exceptionsPath) + &quot;\&quot;]" ToFileName="[Path.GetFileName(exceptionsPath)]" />
+                    <a:MoveFile CountRetries="[Convert.ToInt32(dictConfig(&quot;Asset_RetriesCount&quot;))]" DisplayName="MoveFile - Exceptions" sap:VirtualizedContainerService.HintSize="334,246" sap2010:WorkflowViewState.IdRef="MoveFile_1" PathFromFile="[fileEntityRecordResults.FilePath.ToString]" PathToFolder="[Path.GetDirectoryName(pathExceptions) + &quot;\&quot;]" ToFileName="[Path.GetFileName(pathExceptions)]" />
                   </TryCatch.Try>
                   <TryCatch.Catches>
-                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="502,590" sap2010:WorkflowViewState.IdRef="Catch`1_1">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
@@ -282,13 +282,13 @@
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <ui:LogMessage DisplayName="Log Message - Fatal" sap:VirtualizedContainerService.HintSize="434,96" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Fatal" Message="[&quot;Error moving file: &quot; + fileEntityRecordResults.FilePath.ToString +&quot; To: &quot; + Path.GetDirectoryName(exceptionsPath) + &quot;\&quot; + Path.GetFileName(exceptionsPath)]" />
+                          <ui:LogMessage DisplayName="Log Message - Fatal" sap:VirtualizedContainerService.HintSize="434,96" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Fatal" Message="[&quot;Error moving file: &quot; + fileEntityRecordResults.FilePath.ToString +&quot; To: &quot; + Path.GetDirectoryName(pathExceptions) + &quot;\&quot; + Path.GetFileName(pathExceptions)]" />
                           <Assign DisplayName="Assign - System Exception - Email Body" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_4">
                             <Assign.To>
                               <OutArgument x:TypeArguments="x:String">[emailBody]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
-                              <InArgument x:TypeArguments="x:String">["&lt;p&gt;Hello team,&lt;/p&gt;&lt;p&gt;An Error occurred While trying To move this file: &lt;/p&gt;" +fileEntityRecordResults.FilePath.ToString +" &lt;p&gt;To: &lt;/p&gt; " + Path.GetDirectoryName(exceptionsPath) + "\" + Path.GetFileName(exceptionsPath) +"&lt;p&gt; Please check it.&lt;/p&gt;&lt;p&gt;&lt;em&gt;This is an automated message, please do not reply&lt;/em&gt;&lt;/p&gt;"]</InArgument>
+                              <InArgument x:TypeArguments="x:String">["&lt;p&gt;Hello team,&lt;/p&gt;&lt;p&gt;An Error occurred While trying To move this file: &lt;/p&gt;" +fileEntityRecordResults.FilePath.ToString +" &lt;p&gt;To: &lt;/p&gt; " + Path.GetDirectoryName(pathExceptions) + "\" + Path.GetFileName(pathExceptions) +"&lt;p&gt; Please check it.&lt;/p&gt;&lt;p&gt;&lt;em&gt;This is an automated message, please do not reply&lt;/em&gt;&lt;/p&gt;"]</InArgument>
                             </Assign.Value>
                           </Assign>
                           <as:SendEmailSMTP ArrPathAttachment="{x:Null}" MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" DisplayName="Send processing - error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_1" MailBody="[EmailBody]" MailRecipient="[DictConfig(&quot;Asset_ITEmail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[DictConfig(&quot;Exception Subject&quot;)]" />
@@ -298,7 +298,7 @@
                     </Catch>
                   </TryCatch.Catches>
                 </TryCatch>
-                <al:ReportProgressStep DisplayName="Report progress step 2 - Flag=True" sap:VirtualizedContainerService.HintSize="438.666666666667,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_2" ProgressStepMessage="Step 2 - Move Input File when Flag is True - finished" TransactionQueueItem="[TransactionQueueItem]" />
+                <al:ReportProgressStep DisplayName="Report progress step 2 - Flag=True" sap:VirtualizedContainerService.HintSize="536,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_2" ProgressStepMessage="Step 2 - Move Input File when Flag is True - finished" TransactionQueueItem="[TransactionQueueItem]" />
               </Sequence>
               <FlowStep.Next>
                 <FlowStep x:Name="__ReferenceID5">
@@ -325,8 +325,8 @@
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Exception Path" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_18" LogMessage="[&quot;The Exception shared folder path is: &quot;+exceptionsPath]" />
-                          <e:UpdateRecord_File DisplayName="UpdateRecord_File - Exception" FilePath="[exceptionsPath]" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_1" InputRecordID="[fileEntityRecordResults.id]" UpdatedFileRecord="[updatedRecordException]">
+                          <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Exception Path" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_18" LogMessage="[&quot;The Exception shared folder path is: &quot;+pathExceptions]" />
+                          <e:UpdateRecord_File DisplayName="UpdateRecord_File - Exception" FilePath="[pathExceptions]" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_1" InputRecordID="[fileEntityRecordResults.id]" UpdatedFileRecord="[updatedRecordExceptionValue]">
                             <e:UpdateRecord_File.CurrentProcessName>
                               <InArgument x:TypeArguments="x:String" />
                             </e:UpdateRecord_File.CurrentProcessName>
@@ -374,7 +374,7 @@
                       </sap:WorkflowViewStateService.ViewState>
                       <Sequence sap2010:Annotation.AnnotationText="Check if Emails are processed with the help of Document Entity Statuses" DisplayName="Step Check Email " sap:VirtualizedContainerService.HintSize="200,146.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_9">
                         <Sequence.Variables>
-                          <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="[REQUIRED] True if the bot was able to process every single Email" Name="processedFlag" />
+                          <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="[REQUIRED] True if the bot was able to process every single Email" Name="flagProcessed" />
                         </Sequence.Variables>
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -394,9 +394,15 @@
                               <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Email check" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_6" LogMessage="Email check - Started" />
                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Quotes_Performer\SU_System_CheckAllDocumentProcessed.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="388,115.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Quotes_Performer\SU_System_CheckAllDocumentProcessed.xaml">
                                 <ui:InvokeWorkflowFile.Arguments>
-                                  <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecordID">[documentRecordResults]</InArgument>
-                                  <OutArgument x:TypeArguments="x:Boolean" x:Key="AllAttachmentProcessedFlag">[processedFlag]</OutArgument>
-                                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">[DictConfig]</InArgument>
+                                  <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecordID">
+                                    <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesDocument" ExpressionText="documentRecordResults" />
+                                  </InArgument>
+                                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">
+                                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="DictConfig" />
+                                  </InArgument>
+                                  <OutArgument x:TypeArguments="x:Boolean" x:Key="FlagAllAttachmentProcessed">
+                                    <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="flagProcessed" />
+                                  </OutArgument>
                                 </ui:InvokeWorkflowFile.Arguments>
                               </ui:InvokeWorkflowFile>
                               <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - End Process" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_13" LogMessage="Email check - Completed" />
@@ -444,7 +450,7 @@
                   <av:PointCollection x:Key="ConnectorLocation">520,405 520,455</av:PointCollection>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <Sequence sap2010:Annotation.AnnotationText="Exception Flag is equal to False" DisplayName="Step 2 - Get Quotes Extraction" sap:VirtualizedContainerService.HintSize="550.666666666667,979.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <Sequence sap2010:Annotation.AnnotationText="Exception Flag is equal to False" DisplayName="Step 2 - Get Quotes Extraction" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_4">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -463,14 +469,30 @@
                       <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Exception flag is False" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_4" LogMessage="Exception Flag = False" />
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Quotes_Performer\CSV_ExportExtractionResults.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="388,115.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Quotes_Performer\SU_CSV_ExportExtractionResults.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InArgument x:TypeArguments="x:String" x:Key="JSONResultsFilePath">[documentRecordResults.ResultsJsonFilepath]</InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="CSVFilePath">[CsvFilepath]</OutArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">[fileEntityRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">[documentRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">[sourceEntityRecordResults]</InArgument>
-                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">[DictConfig]</InArgument>
-                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">[changedFileName]</OutArgument>
-                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="DtResult">[DtResults]</InOutArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesFile" x:Key="FileEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesFile" ExpressionText="fileEntityRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesDocument" x:Key="DocumentEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesDocument" ExpressionText="documentRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="q:CommercialRiskQuotesSource" x:Key="SourceEntityRecord">
+                            <mva:VisualBasicValue x:TypeArguments="q:CommercialRiskQuotesSource" ExpressionText="sourceEntityRecordResults" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="DictConfig">
+                            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="DictConfig" />
+                          </InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="ChangedFileName">
+                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="changedFileName" />
+                          </OutArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="DtResult">
+                            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="DtResults" />
+                          </InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="PathJSONResultsFile">
+                            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="documentRecordResults.ResultsJsonFilepath" />
+                          </InArgument>
+                          <OutArgument x:TypeArguments="x:String" x:Key="PathCSVFile">
+                            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="PathCsvFile" />
+                          </OutArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Sequence>
@@ -514,7 +536,7 @@
                   </sap:WorkflowViewStateService.ViewState>
                   <Sequence sap2010:Annotation.AnnotationText="Rename the file and update file path in File Entity" DisplayName="Step 3 - Rename the file" sap:VirtualizedContainerService.HintSize="200,130" sap2010:WorkflowViewState.IdRef="Sequence_26">
                     <Sequence.Variables>
-                      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains path with the new name for the current input file" Name="changedFileNamePath" />
+                      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] Contains path with the new name for the current input file" Name="pathChangedFileName" />
                       <Variable x:TypeArguments="q:CommercialRiskQuotesFile" sap2010:Annotation.AnnotationText="[REQUIRED] output variable for update File path in File entity with the new name" Name="updatedRecordNewName" />
                     </Sequence.Variables>
                     <sap:WorkflowViewStateService.ViewState>
@@ -523,8 +545,8 @@
                         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 3- Rename and move" sap:VirtualizedContainerService.HintSize="534.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_26" LogMessage="Step 3 - Renaming input file" />
-                    <TryCatch DisplayName="Try Catch - Rename current input file" sap:VirtualizedContainerService.HintSize="534.666666666667,800" sap2010:WorkflowViewState.IdRef="TryCatch_5">
+                    <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 3- Rename and move" sap:VirtualizedContainerService.HintSize="490,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_26" LogMessage="Step 3 - Renaming input file" />
+                    <TryCatch DisplayName="Try Catch - Rename current input file" sap:VirtualizedContainerService.HintSize="490,445.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_5">
                       <TryCatch.Try>
                         <Sequence DisplayName="Renaming" sap:VirtualizedContainerService.HintSize="496,560.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_31">
                           <sap:WorkflowViewStateService.ViewState>
@@ -535,13 +557,13 @@
                           <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Renaming started" sap:VirtualizedContainerService.HintSize="434,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_27" LogMessage="Renaming and moving file - started" />
                           <Assign DisplayName="Assign - New file name" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_3">
                             <Assign.To>
-                              <OutArgument x:TypeArguments="x:String">[changedFileNamePath]</OutArgument>
+                              <OutArgument x:TypeArguments="x:String">[pathChangedFileName]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
                               <InArgument x:TypeArguments="x:String">[Path.Combine(Path.GetDirectoryName(fileEntityRecordResults.FilePath.ToString), changedFileName + Path.GetExtension(fileEntityRecordResults.FilePath.ToString))]</InArgument>
                             </Assign.Value>
                           </Assign>
-                          <ui:MoveFile ContinueOnError="{x:Null}" DestinationResource="{x:Null}" PathResource="{x:Null}" sap2010:Annotation.AnnotationText="Renaming the input file based on naming convention" Destination="[changedFileNamePath]" DisplayName="Rename File - Current input" sap:VirtualizedContainerService.HintSize="434,194" sap2010:WorkflowViewState.IdRef="MoveFile_3" Overwrite="True" Path="[fileEntityRecordResults.FilePath.ToString]">
+                          <ui:MoveFile ContinueOnError="{x:Null}" DestinationResource="{x:Null}" PathResource="{x:Null}" sap2010:Annotation.AnnotationText="Renaming the input file based on naming convention" Destination="[pathChangedFileName]" DisplayName="Rename File - Current input" sap:VirtualizedContainerService.HintSize="434,194" sap2010:WorkflowViewState.IdRef="MoveFile_3" Overwrite="True" Path="[fileEntityRecordResults.FilePath.ToString]">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -552,10 +574,10 @@
                         </Sequence>
                       </TryCatch.Try>
                       <TryCatch.Catches>
-                        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="500.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="456,272" sap2010:WorkflowViewState.IdRef="Catch`1_4">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
@@ -576,7 +598,7 @@
                         </Catch>
                       </TryCatch.Catches>
                     </TryCatch>
-                    <e:UpdateRecord_File DisplayName="UpdateRecord_File - New file name" FilePath="[changedFileNamePath]" sap:VirtualizedContainerService.HintSize="534.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_3" InputRecordID="[fileEntityRecordResults.Id]" UpdatedFileRecord="[updatedRecordNewName]">
+                    <e:UpdateRecord_File DisplayName="UpdateRecord_File - New file name" FilePath="[pathChangedFileName]" sap:VirtualizedContainerService.HintSize="490,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_3" InputRecordID="[fileEntityRecordResults.Id]" UpdatedFileRecord="[updatedRecordNewName]">
                       <e:UpdateRecord_File.CurrentProcessName>
                         <InArgument x:TypeArguments="x:String" />
                       </e:UpdateRecord_File.CurrentProcessName>
@@ -584,7 +606,7 @@
                         <InArgument x:TypeArguments="x:String" />
                       </e:UpdateRecord_File.Status>
                     </e:UpdateRecord_File>
-                    <al:ReportProgressStep DisplayName="Report progress step 3 - Rename" sap:VirtualizedContainerService.HintSize="534.666666666667,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_9" ProgressStepMessage="Step 3 - Rename input File - Finished" TransactionQueueItem="[TransactionQueueItem]" />
+                    <al:ReportProgressStep DisplayName="Report progress step 3 - Rename" sap:VirtualizedContainerService.HintSize="490,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_9" ProgressStepMessage="Step 3 - Rename input File - Finished" TransactionQueueItem="[TransactionQueueItem]" />
                   </Sequence>
                   <FlowStep.Next>
                     <FlowStep x:Name="__ReferenceID4">
@@ -620,7 +642,7 @@
                             <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
                                 <ui:AssignOperation.To>
-                                  <OutArgument x:TypeArguments="x:String">[initialPathFromFileEntity]</OutArgument>
+                                  <OutArgument x:TypeArguments="x:String">[pathInitialFromFileEntity]</OutArgument>
                                 </ui:AssignOperation.To>
                                 <ui:AssignOperation.Value>
                                   <InArgument x:TypeArguments="x:String">[Path.GetFileName(fileEntityRecordResults.FilePath.ToString)]</InArgument>
@@ -628,10 +650,10 @@
                               </ui:AssignOperation>
                               <ui:AssignOperation sap:VirtualizedContainerService.HintSize="200,25" sap2010:WorkflowViewState.IdRef="AssignOperation_5">
                                 <ui:AssignOperation.To>
-                                  <OutArgument x:TypeArguments="x:String">[completedPath]</OutArgument>
+                                  <OutArgument x:TypeArguments="x:String">[pathCompleted]</OutArgument>
                                 </ui:AssignOperation.To>
                                 <ui:AssignOperation.Value>
-                                  <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCompletedFolder")+initialPathFromFileEntity]</InArgument>
+                                  <InArgument x:TypeArguments="x:String">[DictConfig("Asset_PerformerCompletedFolder")+pathInitialFromFileEntity]</InArgument>
                                 </ui:AssignOperation.Value>
                               </ui:AssignOperation>
                             </scg:List>
@@ -644,7 +666,7 @@
                         </ui:MultipleAssign>
                         <TryCatch DisplayName="Try Catch - Moving completed file" sap:VirtualizedContainerService.HintSize="438.666666666667,485.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_3">
                           <TryCatch.Try>
-                            <a:MoveFile CountRetries="[Convert.ToInt32(dictConfig(&quot;Asset_RetriesCount&quot;))]" DisplayName="MoveFile - Completed" sap:VirtualizedContainerService.HintSize="334,246" sap2010:WorkflowViewState.IdRef="MoveFile_2" PathFromFile="[fileEntityRecordResults.FilePath.ToString]" PathToFolder="[Path.GetDirectoryName(completedPath) + &quot;\&quot;]" ToFileName="[Path.GetFileName(completedPath)]" />
+                            <a:MoveFile CountRetries="[Convert.ToInt32(dictConfig(&quot;Asset_RetriesCount&quot;))]" DisplayName="MoveFile - Completed" sap:VirtualizedContainerService.HintSize="334,246" sap2010:WorkflowViewState.IdRef="MoveFile_2" PathFromFile="[fileEntityRecordResults.FilePath.ToString]" PathToFolder="[Path.GetDirectoryName(pathCompleted) + &quot;\&quot;]" ToFileName="[Path.GetFileName(pathCompleted)]" />
                           </TryCatch.Try>
                           <TryCatch.Catches>
                             <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
@@ -664,13 +686,13 @@
                                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <ui:LogMessage DisplayName="Log Message - Fatal status" sap:VirtualizedContainerService.HintSize="434,96" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Fatal" Message="[&quot;Error moving file: &quot; + fileEntityRecordResults.FilePath.ToString +&quot; To: &quot; + Path.GetDirectoryName(completedPath) + &quot;\&quot; + Path.GetFileName(completedPath)]" />
+                                  <ui:LogMessage DisplayName="Log Message - Fatal status" sap:VirtualizedContainerService.HintSize="434,96" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Fatal" Message="[&quot;Error moving file: &quot; + fileEntityRecordResults.FilePath.ToString +&quot; To: &quot; + Path.GetDirectoryName(pathCompleted) + &quot;\&quot; + Path.GetFileName(pathCompleted)]" />
                                   <Assign DisplayName="Assign - System Exception Email Body" sap:VirtualizedContainerService.HintSize="434,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_5">
                                     <Assign.To>
                                       <OutArgument x:TypeArguments="x:String">[emailBody]</OutArgument>
                                     </Assign.To>
                                     <Assign.Value>
-                                      <InArgument x:TypeArguments="x:String">["&lt;p&gt;Hello team,&lt;/p&gt;&lt;p&gt;An Error occurred While trying To move this file: &lt;/p&gt;" +fileEntityRecordResults.FilePath.ToString +" &lt;p&gt;To: &lt;/p&gt; " + Path.GetDirectoryName(completedPath) + "\" + Path.GetFileName(completedPath) +"&lt;p&gt; Please check it.&lt;/p&gt;&lt;p&gt;&lt;em&gt;This is an automated message, please do not reply&lt;/em&gt;&lt;/p&gt;"]</InArgument>
+                                      <InArgument x:TypeArguments="x:String">["&lt;p&gt;Hello team,&lt;/p&gt;&lt;p&gt;An Error occurred While trying To move this file: &lt;/p&gt;" +fileEntityRecordResults.FilePath.ToString +" &lt;p&gt;To: &lt;/p&gt; " + Path.GetDirectoryName(pathCompleted) + "\" + Path.GetFileName(pathCompleted) +"&lt;p&gt; Please check it.&lt;/p&gt;&lt;p&gt;&lt;em&gt;This is an automated message, please do not reply&lt;/em&gt;&lt;/p&gt;"]</InArgument>
                                     </Assign.Value>
                                   </Assign>
                                   <as:SendEmailSMTP ArrPathAttachment="{x:Null}" MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" DisplayName="Send processing error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_2" MailBody="[EmailBody]" MailRecipient="[DictConfig(&quot;Asset_ITEmail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[DictConfig(&quot;Exception Subject&quot;)]" />
@@ -698,8 +720,8 @@
                                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 5 - Flag is False" sap:VirtualizedContainerService.HintSize="488.666666666667,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_22" LogMessage="Step 5 - Flag is False" />
-                            <TryCatch DisplayName="Try Catch - Update File path completed" sap:VirtualizedContainerService.HintSize="488.666666666667,506" sap2010:WorkflowViewState.IdRef="TryCatch_7">
+                            <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Log Step 5 - Flag is False" sap:VirtualizedContainerService.HintSize="490,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_22" LogMessage="Step 5 - Flag is False" />
+                            <TryCatch DisplayName="Try Catch - Update File path completed" sap:VirtualizedContainerService.HintSize="490,445.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_7">
                               <TryCatch.Try>
                                 <Sequence DisplayName="Update with Completed the file path" sap:VirtualizedContainerService.HintSize="450,266.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_35">
                                   <sap:WorkflowViewStateService.ViewState>
@@ -707,8 +729,8 @@
                                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Completed Path" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_23" LogMessage="[&quot;The Completed shared folder path is: &quot;+completedPath]" />
-                                  <e:UpdateRecord_File DisplayName="UpdateRecord_File - Completed" FilePath="[completedPath]" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_2" InputRecordID="[fileEntityRecordResults.Id]" UpdatedFileRecord="[updatedRecordCompleted]">
+                                  <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - Completed Path" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_23" LogMessage="[&quot;The Completed shared folder path is: &quot;+pathCompleted]" />
+                                  <e:UpdateRecord_File DisplayName="UpdateRecord_File - Completed" FilePath="[pathCompleted]" sap:VirtualizedContainerService.HintSize="388,25.3333333333333" sap2010:WorkflowViewState.IdRef="UpdateRecord_File_2" InputRecordID="[fileEntityRecordResults.Id]" UpdatedFileRecord="[updatedRecordCompletedValue]">
                                     <e:UpdateRecord_File.CurrentProcessName>
                                       <InArgument x:TypeArguments="x:String" />
                                     </e:UpdateRecord_File.CurrentProcessName>
@@ -720,10 +742,10 @@
                                 </Sequence>
                               </TryCatch.Try>
                               <TryCatch.Catches>
-                                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="454.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_6">
+                                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="456,272" sap2010:WorkflowViewState.IdRef="Catch`1_6">
                                   <sap:WorkflowViewStateService.ViewState>
                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
@@ -744,7 +766,7 @@
                                 </Catch>
                               </TryCatch.Catches>
                             </TryCatch>
-                            <al:ReportProgressStep DisplayName="Report progress step 5 - Flag=False" sap:VirtualizedContainerService.HintSize="488.666666666667,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_7" ProgressStepMessage="Step 5 - Update File Path when Flag is False - finished" TransactionQueueItem="[TransactionQueueItem]" />
+                            <al:ReportProgressStep DisplayName="Report progress step 5 - Flag=False" sap:VirtualizedContainerService.HintSize="490,136.666666666667" sap2010:WorkflowViewState.IdRef="ReportProgressStep_7" ProgressStepMessage="Step 5 - Update File Path when Flag is False - finished" TransactionQueueItem="[TransactionQueueItem]" />
                           </Sequence>
                           <FlowStep.Next>
                             <x:Reference>__ReferenceID0</x:Reference>
