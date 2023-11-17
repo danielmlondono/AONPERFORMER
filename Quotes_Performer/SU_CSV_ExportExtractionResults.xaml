@@ -12,7 +12,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1435.33333333333,1374</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1435.33333333333,1749.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CSV_ExportExtractionResults_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -62,6 +62,7 @@
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>UiPath.CSV</x:String>
       <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -113,9 +114,10 @@
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="512,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="With this workflow the bot will extract the dta from the input JSON file an will write the CSV output report&#xD;&#xA;&#xD;&#xA;In Arguments:&#xD;&#xA;- FileEntityRecord = File Entity Record data&#xD;&#xA;- DocumentEntityRecord = Document Entity Record data&#xD;&#xA;- SourceEntityRecord = Source Entity Record data&#xD;&#xA;- DictConfig = config.json&#xD;&#xA;- PathJSONResultsFile = input JSON file path&#xD;&#xA;&#xD;&#xA;Out Arguments:&#xD;&#xA;- ChangedFileName = New name for the input pdf file&#xD;&#xA;- PathCSVFile = csv report path&#xD;&#xA;&#xD;&#xA;io Arguments:&#xD;&#xA;- DtResult = Appending output data&#xD;&#xA;" DisplayName="CSV_ExportExtractionResults" sap:VirtualizedContainerService.HintSize="512,1684.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="[REQUIRED] This is the output variable for the Read Json activity. Will contains Json data" Name="jsonData" />
       <Variable x:TypeArguments="njl:JObject" sap2010:Annotation.AnnotationText="[REQUIRED] Contains the Json data after the deserialize activity" Name="jsonObject" />
@@ -290,6 +292,14 @@
       </Assign.To>
       <Assign.Value>
         <InArgument x:TypeArguments="x:String">[jsonObject("OutputResults")("Insured Name").ToString+"_"+jsonObject("OutputResults")("Carrier Name").ToString+"_"+DocumentEntityRecord.Id.ToString+"_"+(dtResult.RowCount).ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Assign - Removing prohibited characters" sap:VirtualizedContainerService.HintSize="450,85.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_11">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[ChangedFileName]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Replace(ChangedFileName, "[\\\/\*\:\?\""\&lt;\&gt;\|]", "_")]</InArgument>
       </Assign.Value>
     </Assign>
     <al:Logging ErrorCode="{x:Null}" ErrorDescription="{x:Null}" ExceptionObject="{x:Null}" FlagInfo="{x:Null}" DisplayName="Logging - CSV completed" sap:VirtualizedContainerService.HintSize="450,25.3333333333333" sap2010:WorkflowViewState.IdRef="Logging_5" LogMessage="The current output data was added to the output data table" />

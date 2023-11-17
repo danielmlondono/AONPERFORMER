@@ -31,7 +31,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1129.33333333333,5338.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1435.33333333333,5338.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>SU_GeneralCatch_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="76">
@@ -268,7 +268,7 @@
       </If>
       <If Condition="[flagSendErrorMail]" DisplayName="If send mail" sap:VirtualizedContainerService.HintSize="484,278" sap2010:WorkflowViewState.IdRef="If_4">
         <If.Then>
-          <as:SendEmailSMTP MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" ArrPathAttachment="[{pathScreenshotFile}]" DisplayName="Send processing error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="284,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_1" MailBody="[mailBody]" MailRecipient="[MailRecipient]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[mailSubject]" />
+          <as:SendEmailSMTP MailBcc="{x:Null}" MailCc="{x:Null}" ServerSMTP="{x:Null}" ArrPathAttachment="[{pathScreenshotFile}]" DisplayName="Send processing error mail" FlagMailbodyHTML="True" sap:VirtualizedContainerService.HintSize="310.666666666667,82" sap2010:WorkflowViewState.IdRef="SendEmailSMTP_1" MailBody="[mailBody]" MailRecipient="[DictConfig(&quot;Asset_RobotSupportMail&quot;)]" MailSender="[DictConfig(&quot;Asset_EmailAccount&quot;)]" MailSubject="[mailSubject]" />
         </If.Then>
       </If>
     </Sequence>
